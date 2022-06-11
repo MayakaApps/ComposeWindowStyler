@@ -2,7 +2,7 @@
 
 This is a small library that lets you use transparency, aero, acrylic, mica, and tabbed in Compose for Desktop (Windows) easily.
 
-![](docs\sample.png)
+![](docs/sample.png)
 
 ## Usage
 After adding the package from GitHub Packages (Do not forget to add the maven repository), you'll be able to use the library by adding a single line to your Window composable content as follows:
