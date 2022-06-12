@@ -1,5 +1,6 @@
 package com.mayakapps.compose.windowstyler.jna
 
+import com.mayakapps.compose.windowstyler.jna.structs.WindowCompositionAttributeData
 import com.sun.jna.Native
 import com.sun.jna.platform.win32.WinDef
 import com.sun.jna.win32.StdCallLibrary

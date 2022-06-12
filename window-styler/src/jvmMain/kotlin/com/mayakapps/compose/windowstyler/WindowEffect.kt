@@ -3,6 +3,14 @@ package com.mayakapps.compose.windowstyler
 import androidx.compose.runtime.*
 import androidx.compose.ui.window.FrameWindowScope
 import com.mayakapps.compose.windowstyler.jna.*
+import com.mayakapps.compose.windowstyler.jna.enums.AccentFlag
+import com.mayakapps.compose.windowstyler.jna.enums.AccentState
+import com.mayakapps.compose.windowstyler.jna.enums.DwmWindowAttribute
+import com.mayakapps.compose.windowstyler.jna.enums.WindowCompositionAttribute
+import com.mayakapps.compose.windowstyler.jna.structs.AccentPolicy
+import com.mayakapps.compose.windowstyler.jna.structs.Margins
+import com.mayakapps.compose.windowstyler.jna.structs.OsVersionInfo
+import com.mayakapps.compose.windowstyler.jna.structs.WindowCompositionAttributeData
 import com.sun.jna.platform.win32.WinDef
 import com.sun.jna.ptr.IntByReference
 import javax.swing.UIManager
@@ -37,11 +45,9 @@ fun FrameWindowScope.ApplyEffect(effect: WindowEffect) = window.apply {
     LaunchedEffect(effect) {
         // Set [ACCENT_DISABLED] as [ACCENT_POLICY] in
         // [SetWindowCompositionAttribute] to apply styles properly.
-        val policy = AccentPolicy(AccentState.ACCENT_DISABLED)
         val data = WindowCompositionAttributeData(
             WindowCompositionAttribute.WCA_ACCENT_POLICY,
-            policy,
-            policy.size(),
+            AccentPolicy(AccentState.ACCENT_DISABLED),
         )
 
         User32.SetWindowCompositionAttribute(hwnd, data)
@@ -55,7 +61,7 @@ fun FrameWindowScope.ApplyEffect(effect: WindowEffect) = window.apply {
             windowsBuild >= 22523 &&
             (effect is WindowEffect.Acrylic || effect is WindowEffect.Mica || effect is WindowEffect.Tabbed)
         ) {
-            val margins = Margins(cxLeftWidth = -1, cxRightWidth = -1, cyTopHeight = -1, cyBottomHeight = -1)
+            val margins = Margins(leftWidth = -1, rightWidth = -1, topHeight = -1, bottomHeight = -1)
             val isDark = WinDef.BOOLByReference(WinDef.BOOL((effect as? WindowEffect.Mica)?.isDark ?: false))
             val effectValue = IntByReference(
                 when (effect) {
@@ -73,7 +79,7 @@ fun FrameWindowScope.ApplyEffect(effect: WindowEffect) = window.apply {
             if (effect is WindowEffect.Mica) {
                 // Check for Windows 11.
                 if (windowsBuild >= 22000) {
-                    val margins = Margins(cxLeftWidth = -1, cxRightWidth = -1, cyTopHeight = -1, cyBottomHeight = -1)
+                    val margins = Margins(leftWidth = -1, rightWidth = -1, topHeight = -1, bottomHeight = -1)
                     val isDark = WinDef.BOOLByReference(WinDef.BOOL(effect.isDark))
                     val enabled = WinDef.BOOLByReference(WinDef.BOOL(true))
 
@@ -94,7 +100,7 @@ fun FrameWindowScope.ApplyEffect(effect: WindowEffect) = window.apply {
                     //
                     // Matching value with bitsdojo_window.
                     // https://github.com/bitsdojo/bitsdojo_window/blob/adad0cd40be3d3e12df11d864f18a96a2d0fb4fb/bitsdojo_window_windows/windows/bitsdojo_window.cpp#L149
-                    val margins = Margins(cxLeftWidth = 0, cxRightWidth = 0, cyTopHeight = 1, cyBottomHeight = 0)
+                    val margins = Margins(leftWidth = 0, rightWidth = 0, topHeight = 1, bottomHeight = 0)
                     val enabled = WinDef.BOOLByReference(WinDef.BOOL(false))
 
                     Dwm.DwmExtendFrameIntoClientArea(hwnd, margins)
@@ -109,19 +115,18 @@ fun FrameWindowScope.ApplyEffect(effect: WindowEffect) = window.apply {
                         is WindowEffect.Acrylic -> AccentState.ACCENT_ENABLE_ACRYLICBLURBEHIND
                         else -> throw IllegalStateException()
                     },
-                    accentFlags = 0x1E0,
-                    gradientColor = when (effect) {
+                    accentFlags = setOf(AccentFlag.DRAW_ALL_BORDERS),
+                    color = when (effect) {
                         is WindowEffect.Default -> UIManager.getColor("Panel.background").rgb
                         is WindowEffect.Solid -> effect.color
                         is WindowEffect.Acrylic -> effect.color
                         else -> 0x7FFFFFFF
-                    }
+                    },
                 )
 
                 val accentData = WindowCompositionAttributeData(
                     WindowCompositionAttribute.WCA_ACCENT_POLICY,
                     accent,
-                    accent.size(),
                 )
 
                 User32.SetWindowCompositionAttribute(hwnd, accentData)
