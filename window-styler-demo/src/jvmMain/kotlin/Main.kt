@@ -35,7 +35,7 @@ fun App(isDark: Boolean = isSystemInDarkTheme()) {
 
 fun main() = application {
     Window(onCloseRequest = ::exitApplication) {
-        WindowStyle(backdrop = WindowBackdrop.Mica(isSystemInDarkTheme()))
+        WindowStyle(isDarkTheme = isSystemInDarkTheme(), backdropType = WindowBackdrop.Mica)
 
         App()
     }
