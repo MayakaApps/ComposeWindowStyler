@@ -21,10 +21,10 @@ internal val windowsBuild by lazy {
     osVersionInfo.buildNumber
 }
 
-internal fun WindowEffect.toDwmSystemBackdrop(): DwmSystemBackdrop =
+internal fun WindowBackdrop.toDwmSystemBackdrop(): DwmSystemBackdrop =
     when (this) {
-        is WindowEffect.Mica -> DwmSystemBackdrop.DWMSBT_MAINWINDOW
-        is WindowEffect.Acrylic -> DwmSystemBackdrop.DWMSBT_TRANSIENTWINDOW
-        is WindowEffect.Tabbed -> DwmSystemBackdrop.DWMSBT_TABBEDWINDOW
+        is WindowBackdrop.Mica -> DwmSystemBackdrop.DWMSBT_MAINWINDOW
+        is WindowBackdrop.Acrylic -> DwmSystemBackdrop.DWMSBT_TRANSIENTWINDOW
+        is WindowBackdrop.Tabbed -> DwmSystemBackdrop.DWMSBT_TABBEDWINDOW
         else -> DwmSystemBackdrop.DWMSBT_DISABLE
     }
