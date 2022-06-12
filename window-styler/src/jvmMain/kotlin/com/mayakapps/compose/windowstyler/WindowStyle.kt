@@ -12,49 +12,46 @@ import com.mayakapps.compose.windowstyler.jna.enums.AccentFlag
 import com.mayakapps.compose.windowstyler.jna.enums.AccentState
 import javax.swing.UIManager
 
-sealed interface WindowEffect {
-    object Default : WindowEffect
-    object Transparent : WindowEffect
-    data class Solid(val color: Int) : WindowEffect
-    object Aero : WindowEffect
-    data class Acrylic(val color: Int) : WindowEffect
-    data class Mica(val isDark: Boolean) : WindowEffect
-    object Tabbed : WindowEffect
-}
-
 @Composable
-fun FrameWindowScope.ApplyEffect(effect: WindowEffect) = window.apply {
-    val hwnd = remember { windowHWND }
-
-    var lastEffect by remember { mutableStateOf<WindowEffect?>(null) }
-
+fun FrameWindowScope.WindowStyle(
+    isDarkTheme: Boolean = false,
+    backdropType: WindowBackdrop = WindowBackdrop.Default,
+) {
     LaunchedEffect(Unit) {
-        setComposeLayerTransparency(true)
-        hackContentPane()
+        window.setComposeLayerTransparency(true)
+        window.hackContentPane()
     }
 
-    LaunchedEffect(effect) {
+    val hwnd = remember { window.windowHWND }
+
+    var lastEffect by remember { mutableStateOf<WindowBackdrop?>(null) }
+
+    if (windowsBuild >= 17763) {
+        LaunchedEffect(isDarkTheme) {
+            setImmersiveDarkModeEnabled(hwnd, isDarkTheme)
+        }
+    }
+
+    LaunchedEffect(backdropType) {
         // Set [ACCENT_DISABLED] as [ACCENT_POLICY] to apply styles properly.
         setAccentPolicy(hwnd, AccentState.ACCENT_DISABLED)
 
-        if (effect is WindowEffect.Transparent) return@LaunchedEffect
+        if (backdropType is WindowBackdrop.Transparent) return@LaunchedEffect
 
         // Only on later Windows 11 versions and if effect is WindowEffect.mica,
         // WindowEffect.acrylic or WindowEffect.tabbed, otherwise fallback to old
         // approach.
         if (
             windowsBuild >= 22523 &&
-            (effect is WindowEffect.Acrylic || effect is WindowEffect.Mica || effect is WindowEffect.Tabbed)
+            (backdropType is WindowBackdrop.Acrylic || backdropType is WindowBackdrop.Mica || backdropType is WindowBackdrop.Tabbed)
         ) {
             createSheetOfGlassEffect(hwnd)
-            setImmersiveDarkModeEnabled(hwnd, (effect as? WindowEffect.Mica)?.isDark ?: false)
-            setSystemBackdrop(hwnd, effect.toDwmSystemBackdrop())
+            setSystemBackdrop(hwnd, backdropType.toDwmSystemBackdrop())
         } else {
-            if (effect is WindowEffect.Mica) {
+            if (backdropType is WindowBackdrop.Mica) {
                 // Check for Windows 11.
                 if (windowsBuild >= 22000) {
                     createSheetOfGlassEffect(hwnd)
-                    setImmersiveDarkModeEnabled(hwnd, effect.isDark)
                     setMicaEffectEnabled(hwnd, true)
                 }
             } else {
@@ -62,33 +59,32 @@ fun FrameWindowScope.ApplyEffect(effect: WindowEffect) = window.apply {
                 // if the last set effect was [WindowEffect.mica], since it sets
                 // negative margins to the window.
                 if (
-                    (windowsBuild >= 22000 && lastEffect is WindowEffect.Mica) ||
-                    (windowsBuild >= 22523 && (lastEffect is WindowEffect.Acrylic || lastEffect is WindowEffect.Tabbed))
+                    (windowsBuild >= 22000 && lastEffect is WindowBackdrop.Mica) ||
+                    (windowsBuild >= 22523 && (lastEffect is WindowBackdrop.Acrylic || lastEffect is WindowBackdrop.Tabbed))
                 ) {
                     restoreWindowFrame(hwnd)
-                    setImmersiveDarkModeEnabled(hwnd, false)
                     setMicaEffectEnabled(hwnd, false)
                 }
 
                 setAccentPolicy(
                     hwnd = hwnd,
-                    accentState = when (effect) {
-                        is WindowEffect.Default, is WindowEffect.Solid -> AccentState.ACCENT_ENABLE_GRADIENT
-                        is WindowEffect.Aero -> AccentState.ACCENT_ENABLE_BLURBEHIND
-                        is WindowEffect.Acrylic -> AccentState.ACCENT_ENABLE_ACRYLICBLURBEHIND
+                    accentState = when (backdropType) {
+                        is WindowBackdrop.Default, is WindowBackdrop.Solid -> AccentState.ACCENT_ENABLE_GRADIENT
+                        is WindowBackdrop.Aero -> AccentState.ACCENT_ENABLE_BLURBEHIND
+                        is WindowBackdrop.Acrylic -> AccentState.ACCENT_ENABLE_ACRYLICBLURBEHIND
                         else -> throw IllegalStateException()
                     },
                     accentFlags = setOf(AccentFlag.DRAW_ALL_BORDERS),
-                    color = when (effect) {
-                        is WindowEffect.Default -> UIManager.getColor("Panel.background").rgb
-                        is WindowEffect.Solid -> effect.color
-                        is WindowEffect.Acrylic -> effect.color
+                    color = when (backdropType) {
+                        is WindowBackdrop.Default -> UIManager.getColor("Panel.background").rgb
+                        is WindowBackdrop.Solid -> backdropType.color
+                        is WindowBackdrop.Acrylic -> backdropType.color
                         else -> 0x7FFFFFFF
                     },
                 )
             }
         }
 
-        lastEffect = effect
+        lastEffect = backdropType
     }
 }

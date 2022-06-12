@@ -11,8 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import com.mayakapps.compose.windowstyler.ApplyEffect
-import com.mayakapps.compose.windowstyler.WindowEffect
+import com.mayakapps.compose.windowstyler.WindowBackdrop
+import com.mayakapps.compose.windowstyler.WindowStyle
 
 @Composable
 @Preview
@@ -35,7 +35,7 @@ fun App(isDark: Boolean = isSystemInDarkTheme()) {
 
 fun main() = application {
     Window(onCloseRequest = ::exitApplication) {
-        ApplyEffect(WindowEffect.Mica(isSystemInDarkTheme()))
+        WindowStyle(isDarkTheme = isSystemInDarkTheme(), backdropType = WindowBackdrop.Mica)
 
         App()
     }
