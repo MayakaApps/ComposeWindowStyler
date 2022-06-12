@@ -1,4 +1,4 @@
-package com.mayakapps.composebackdrop.jna
+package com.mayakapps.compose.windowstyler.jna
 
 import com.sun.jna.Native
 import com.sun.jna.PointerType

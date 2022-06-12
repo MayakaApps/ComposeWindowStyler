@@ -1,4 +1,4 @@
-package com.mayakapps.composebackdrop.jna
+package com.mayakapps.compose.windowstyler.jna
 
 @Suppress("SpellCheckingInspection", "unused")
 internal object DwmWindowAttribute {

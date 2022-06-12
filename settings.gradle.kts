@@ -15,6 +15,5 @@ pluginManagement {
     }
 }
 
-rootProject.name = "ComposeBackdrop"
-
-
+rootProject.name = "ComposeWindowStyler"
+include("window-styler", "window-styler-demo")

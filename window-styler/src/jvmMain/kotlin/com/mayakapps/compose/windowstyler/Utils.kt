@@ -1,4 +1,4 @@
-package com.mayakapps.composebackdrop
+package com.mayakapps.compose.windowstyler
 
 import androidx.compose.ui.awt.ComposeWindow
 import com.sun.jna.Native
