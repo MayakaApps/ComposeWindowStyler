@@ -1,4 +1,4 @@
-package com.mayakapps.composebackdrop
+package com.mayakapps.compose.windowstyler
 
 import java.awt.AlphaComposite
 import java.awt.Graphics

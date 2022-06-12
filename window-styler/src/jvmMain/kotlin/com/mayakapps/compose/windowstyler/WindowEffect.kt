@@ -1,8 +1,8 @@
-package com.mayakapps.composebackdrop
+package com.mayakapps.compose.windowstyler
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.window.FrameWindowScope
-import com.mayakapps.composebackdrop.jna.*
+import com.mayakapps.compose.windowstyler.jna.*
 import com.sun.jna.platform.win32.WinDef
 import com.sun.jna.ptr.IntByReference
 import javax.swing.UIManager
