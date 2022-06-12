@@ -46,7 +46,8 @@ internal object WindowManager {
     fun setImmersiveDarkModeEnabled(hwnd: HWND, enabled: Boolean) {
         val result = Dwm.DwmSetWindowAttribute(
             hwnd,
-            DwmWindowAttribute.DWMWA_USE_IMMERSIVE_DARK_MODE,
+            if (windowsBuild >= 18985) DwmWindowAttribute.DWMWA_USE_IMMERSIVE_DARK_MODE
+            else DwmWindowAttribute.DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1,
             WinDef.BOOLByReference(BOOL(enabled)),
             BOOL.SIZE,
         )
