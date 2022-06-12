@@ -1,9 +1,10 @@
-package com.mayakapps.compose.windowstyler.jna
+package com.mayakapps.compose.windowstyler.jna.structs
 
 import com.sun.jna.Pointer
 import com.sun.jna.Structure.FieldOrder
 import com.sun.jna.platform.win32.WinDef.ULONG
 
+@Suppress("unused")
 @FieldOrder(
     "osVersionInfoSize",
     "majorVersion",
@@ -12,11 +13,16 @@ import com.sun.jna.platform.win32.WinDef.ULONG
     "platformId",
     "csdVersion",
 )
-internal data class OsVersionInfo(
-    @JvmField var osVersionInfoSize: Int = (ULONG.SIZE * 5) + 4,
+internal class OsVersionInfo(
     @JvmField var majorVersion: Int = 0,
     @JvmField var minorVersion: Int = 0,
     @JvmField var buildNumber: Int = 0,
     @JvmField var platformId: Int = 0,
-    @JvmField var csdVersion: Pointer? = null,
-) : BaseStructure()
+) : BaseStructure() {
+
+    @JvmField
+    var osVersionInfoSize: Int = (ULONG.SIZE * 5) + 4
+
+    @JvmField
+    var csdVersion: Pointer? = null
+}

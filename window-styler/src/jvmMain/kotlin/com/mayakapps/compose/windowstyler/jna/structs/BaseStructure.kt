@@ -1,7 +1,7 @@
-package com.mayakapps.compose.windowstyler.jna
+package com.mayakapps.compose.windowstyler.jna.structs
 
 import com.sun.jna.Structure
 
 internal open class BaseStructure : Structure(), Structure.ByReference {
-    fun dispose() = clear()
+    open fun dispose() = clear()
 }
