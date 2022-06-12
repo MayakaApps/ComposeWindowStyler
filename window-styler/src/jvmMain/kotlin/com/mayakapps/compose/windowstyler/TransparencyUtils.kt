@@ -1,17 +1,12 @@
 package com.mayakapps.compose.windowstyler
 
 import androidx.compose.ui.awt.ComposeWindow
-import com.sun.jna.Native
-import com.sun.jna.platform.win32.WinDef
 import org.jetbrains.skiko.SkiaLayer
 import java.awt.BorderLayout
 import java.awt.Color
 import java.awt.Component
 import javax.swing.JComponent
 import javax.swing.JFrame
-
-internal val JFrame.windowHWND
-    get() = WinDef.HWND(Native.getWindowPointer(this))
 
 internal fun ComposeWindow.setComposeLayerTransparency(isTransparent: Boolean) {
     val delegate = delegateField.get(this@setComposeLayerTransparency)
