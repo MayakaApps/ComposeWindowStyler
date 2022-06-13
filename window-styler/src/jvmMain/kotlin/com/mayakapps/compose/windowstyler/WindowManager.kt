@@ -1,102 +1,167 @@
 package com.mayakapps.compose.windowstyler
 
-import com.mayakapps.compose.windowstyler.jna.Dwm
-import com.mayakapps.compose.windowstyler.jna.DwmSetWindowAttribute
-import com.mayakapps.compose.windowstyler.jna.User32
-import com.mayakapps.compose.windowstyler.jna.enums.*
-import com.mayakapps.compose.windowstyler.jna.structs.AccentPolicy
-import com.mayakapps.compose.windowstyler.jna.structs.Margins
-import com.mayakapps.compose.windowstyler.jna.structs.WindowCompositionAttributeData
-import com.sun.jna.Native
-import com.sun.jna.platform.win32.W32Errors
-import com.sun.jna.platform.win32.WinDef
-import com.sun.jna.platform.win32.WinDef.BOOL
+import androidx.compose.ui.awt.ComposeWindow
+import androidx.compose.ui.graphics.Color
+import com.mayakapps.compose.windowstyler.jna.enums.AccentFlag
+import com.mayakapps.compose.windowstyler.jna.enums.AccentState
+import com.mayakapps.compose.windowstyler.jna.enums.DwmSystemBackdrop
 import com.sun.jna.platform.win32.WinDef.HWND
+import javax.swing.JFrame
+import javax.swing.SwingUtilities
 
-internal object WindowManager {
+class WindowManager(
+    window: JFrame,
+    isDarkTheme: Boolean = false,
+    backdropType: WindowBackdrop = WindowBackdrop.Default,
+) {
 
-    fun createSheetOfGlassEffect(hwnd: HWND) =
-        extendFrameIntoClientArea(hwnd, -1, -1, -1, -1)
+    private val hwnd: HWND = window.hwnd
 
-    fun restoreWindowFrame(hwnd: HWND) {
-        // At least one margin should be non-negative in order to show the DWM
-        // window shadow created by handling [WM_NCCALCSIZE].
-        //
-        // Matching value with bitsdojo_window.
-        // https://github.com/bitsdojo/bitsdojo_window/blob/adad0cd40be3d3e12df11d864f18a96a2d0fb4fb/bitsdojo_window_windows/windows/bitsdojo_window.cpp#L149
-        extendFrameIntoClientArea(hwnd, 0, 0, 1, 0)
+    var isDarkTheme: Boolean = isDarkTheme
+        set(value) {
+            if (field != value) {
+                field = value
+                updateTheme()
+            }
+        }
+
+    var backdropType: WindowBackdrop = backdropType
+        set(value) {
+            if (field != value) {
+                field = value
+                updateBackdrop()
+            }
+        }
+
+    init {
+        // invokeLater is called to make sure that ComposeLayer was initialized first
+        SwingUtilities.invokeLater {
+            // For some reason, reversing the order of these two calls doesn't work.
+            if (window is ComposeWindow) window.setComposeLayerTransparency(true)
+            window.hackContentPane()
+
+            updateTheme()
+            updateBackdrop()
+        }
     }
 
-    private fun extendFrameIntoClientArea(
-        hwnd: HWND,
-        leftWidth: Int = 0,
-        rightWidth: Int = 0,
-        topHeight: Int = 0,
-        bottomHeight: Int = 0,
-    ) {
-        val margins = Margins(leftWidth, rightWidth, topHeight, bottomHeight)
+    private var isSystemBackdropSet = false
+    private var isMicaEnabled = false
+    private var isAccentPolicySet = false
+    private var isSheetOfGlassApplied = false
 
-        val result = Dwm.DwmExtendFrameIntoClientArea(hwnd, margins)
-        if (result != W32Errors.S_OK) println("DwmExtendFrameIntoClientArea failed with result $result")
+    private fun updateTheme() {
+        if (windowsBuild >= 17763 && Native.setImmersiveDarkModeEnabled(hwnd, isDarkTheme)) {
+            when (backdropType) {
+                // For some reason, using setImmersiveDarkModeEnabled after setting accent policy to transparent
+                // results in solid red backdrop. So, we have to reset the transparent backdrop after using it.
+                is WindowBackdrop.Transparent -> {
+                    resetAccentPolicy()
+                    updateBackdrop()
+                }
 
-        margins.dispose()
+                // This is done to update the background color between white or black
+                is WindowBackdrop.Default -> updateBackdrop()
+
+                else -> {
+                    /* No action needed */
+                }
+            }
+        }
     }
 
+    private fun updateBackdrop() {
+        // This is done to make sure that the window has become visible
+        // If the window isn't shown yet, and we try to apply Default, Solid, Aero,
+        // or Acrylic, the effect will be applied to the title bar background
+        // leaving the caption with awkward background box.
+        // Unfortunately, even with this method, mica in light mode has this
+        // background box.
+        SwingUtilities.invokeLater {
+            // Only on later Windows 11 versions and if effect is WindowEffect.mica,
+            // WindowEffect.acrylic or WindowEffect.tabbed, otherwise fallback to old
+            // approach.
+            if (
+                windowsBuild >= 22523 &&
+                (backdropType is WindowBackdrop.Acrylic || backdropType is WindowBackdrop.Mica || backdropType is WindowBackdrop.Tabbed)
+            ) {
+                setSystemBackdrop(backdropType.toDwmSystemBackdrop())
+            } else {
+                if (backdropType is WindowBackdrop.Mica) {
+                    // Check for Windows 11.
+                    if (windowsBuild >= 22000) {
+                        setMicaEffectEnabled(true)
+                    }
+                } else {
+                    val color = when (val backdropType = backdropType) {
+                        // As the transparency hack is irreversible, the default effect is applied by solid backdrop.
+                        // The default color is white or black depending on the theme
+                        is WindowBackdrop.Default -> (if (isDarkTheme) Color.Black else Color.White).toAbgr()
+                        is WindowBackdrop.Transparent -> backdropType.color.toAbgrForTransparent()
+                        is ColorableWindowBackdrop -> backdropType.color.toAbgr()
+                        else -> 0x7FFFFFFF
+                    }
 
-    fun setImmersiveDarkModeEnabled(hwnd: HWND, enabled: Boolean) {
-        val result = Dwm.DwmSetWindowAttribute(
-            hwnd,
-            if (windowsBuild >= 18985) DwmWindowAttribute.DWMWA_USE_IMMERSIVE_DARK_MODE
-            else DwmWindowAttribute.DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1,
-            WinDef.BOOLByReference(BOOL(enabled)),
-            BOOL.SIZE,
-        )
-
-        if (result != W32Errors.S_OK) println("DwmSetWindowAttribute(DWMWA_USE_IMMERSIVE_DARK_MODE) failed with result $result")
+                    setAccentPolicy(
+                        accentState = backdropType.toAccentState(),
+                        accentFlags = setOf(AccentFlag.DRAW_ALL_BORDERS),
+                        color = color,
+                    )
+                }
+            }
+        }
     }
 
-    fun setSystemBackdrop(hwnd: HWND, systemBackdrop: DwmSystemBackdrop) {
-        val result = Dwm.DwmSetWindowAttribute(
-            hwnd,
-            DwmWindowAttribute.DWMWA_SYSTEMBACKDROP_TYPE,
-            systemBackdrop.intByReference,
-            INT_SIZE,
-        )
-
-        if (result != W32Errors.S_OK) println("DwmSetWindowAttribute(DWMWA_MICA_EFFECT) failed with result $result")
+    private fun setSystemBackdrop(systemBackdrop: DwmSystemBackdrop) {
+        createSheetOfGlassEffect()
+        if (Native.setSystemBackdrop(hwnd, systemBackdrop)) {
+            isSystemBackdropSet = systemBackdrop == DwmSystemBackdrop.DWMSBT_DISABLE
+            if (isSystemBackdropSet) resetAccentPolicy()
+        }
     }
 
-    fun setMicaEffectEnabled(hwnd: HWND, enabled: Boolean) {
-        val result = Dwm.DwmSetWindowAttribute(
-            hwnd,
-            DwmWindowAttribute.DWMWA_MICA_EFFECT,
-            WinDef.BOOLByReference(BOOL(enabled)),
-            BOOL.SIZE,
-        )
-
-        if (result != W32Errors.S_OK) println("DwmSetWindowAttribute(DWMWA_MICA_EFFECT) failed with result $result")
+    private fun setMicaEffectEnabled(enabled: Boolean) {
+        createSheetOfGlassEffect()
+        if (Native.setMicaEffectEnabled(hwnd, enabled)) {
+            isMicaEnabled = enabled
+            if (isMicaEnabled) resetAccentPolicy()
+        }
     }
 
-
-    internal fun setAccentPolicy(
-        hwnd: HWND,
+    private fun setAccentPolicy(
         accentState: AccentState = AccentState.ACCENT_DISABLED,
         accentFlags: Set<AccentFlag> = emptySet(),
         color: Int = 0,
         animationId: Int = 0,
     ) {
-        Native.setLastError(0)
-
-        val isSuccess = User32.SetWindowCompositionAttribute(
-            hwnd,
-            WindowCompositionAttributeData(
-                WindowCompositionAttribute.WCA_ACCENT_POLICY,
-                AccentPolicy(accentState, accentFlags, color, animationId),
-            ),
-        )
-
-        if (!isSuccess) println("SetWindowCompositionAttribute(WCA_ACCENT_POLICY) failed with last error ${Native.getLastError()}")
+        if (Native.setAccentPolicy(hwnd, accentState, accentFlags, color, animationId)) {
+            isAccentPolicySet = accentState != AccentState.ACCENT_DISABLED
+            if (isAccentPolicySet) {
+                resetSystemBackdrop()
+                resetMicaEffectEnabled()
+                resetWindowFrame()
+            }
+        }
     }
 
-    private const val INT_SIZE = 4
+    private fun createSheetOfGlassEffect() {
+        if (!isSheetOfGlassApplied && Native.createSheetOfGlassEffect(hwnd)) isSheetOfGlassApplied = true
+    }
+
+
+    private fun resetSystemBackdrop() {
+        if (isSystemBackdropSet) setSystemBackdrop(DwmSystemBackdrop.DWMSBT_DISABLE)
+    }
+
+    private fun resetMicaEffectEnabled() {
+        if (isMicaEnabled) setMicaEffectEnabled(false)
+    }
+
+    private fun resetAccentPolicy() {
+        if (isAccentPolicySet) setAccentPolicy(AccentState.ACCENT_DISABLED)
+    }
+
+    private fun resetWindowFrame() {
+        if (isSheetOfGlassApplied && Native.restoreWindowFrame(hwnd)) isSheetOfGlassApplied = false
+    }
 }
