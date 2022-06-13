@@ -30,6 +30,7 @@ class WindowManager(
             val finalValue = value.fallbackIfUnsupported()
 
             if (field != finalValue) {
+                wasAero = field is WindowBackdrop.Aero
                 field = finalValue
                 updateBackdrop()
             }
@@ -47,6 +48,7 @@ class WindowManager(
         }
     }
 
+    private var wasAero = false
     private var isSystemBackdropSet = false
     private var isMicaEnabled = false
     private var isAccentPolicySet = false
@@ -111,6 +113,9 @@ class WindowManager(
                         is ColorableWindowBackdrop -> backdropType.color.toAbgr()
                         else -> 0x7FFFFFFF
                     }
+
+                    // This is required as sometimes the window gets stuck at aero
+                    if (wasAero) resetAccentPolicy()
 
                     setAccentPolicy(
                         accentState = backdropType.toAccentState(),
