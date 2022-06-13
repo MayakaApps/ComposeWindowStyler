@@ -23,7 +23,7 @@ sealed interface WindowBackdrop {
     }
 
     data class Acrylic(override val color: Color) : WindowBackdrop, ColorableWindowBackdrop {
-        override val supportedSince: Int = 170630
+        override val supportedSince: Int = 17063
     }
 
     object Mica : WindowBackdrop {
