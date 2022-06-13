@@ -2,6 +2,7 @@ package com.mayakapps.compose.windowstyler
 
 import androidx.compose.ui.awt.ComposeWindow
 import com.mayakapps.compose.windowstyler.jna.Nt
+import com.mayakapps.compose.windowstyler.jna.enums.AccentState
 import com.mayakapps.compose.windowstyler.jna.enums.DwmSystemBackdrop
 import com.mayakapps.compose.windowstyler.jna.structs.OsVersionInfo
 import com.sun.jna.Native
@@ -27,4 +28,13 @@ internal fun WindowBackdrop.toDwmSystemBackdrop(): DwmSystemBackdrop =
         is WindowBackdrop.Acrylic -> DwmSystemBackdrop.DWMSBT_TRANSIENTWINDOW
         is WindowBackdrop.Tabbed -> DwmSystemBackdrop.DWMSBT_TABBEDWINDOW
         else -> DwmSystemBackdrop.DWMSBT_DISABLE
+    }
+
+
+internal fun WindowBackdrop.toAccentState(): AccentState =
+    when (this) {
+        is WindowBackdrop.Default, is WindowBackdrop.Solid -> AccentState.ACCENT_ENABLE_GRADIENT
+        is WindowBackdrop.Aero -> AccentState.ACCENT_ENABLE_BLURBEHIND
+        is WindowBackdrop.Acrylic -> AccentState.ACCENT_ENABLE_ACRYLICBLURBEHIND
+        else -> AccentState.ACCENT_DISABLED
     }
