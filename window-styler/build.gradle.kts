@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "com.mayakapps.compose"
-version = "0.1.0"
+version = extra["VERSION_NAME"] as String
 
 kotlin {
     jvm {
