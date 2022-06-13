@@ -27,8 +27,10 @@ class WindowManager(
 
     var backdropType: WindowBackdrop = backdropType
         set(value) {
-            if (field != value) {
-                field = value
+            val finalValue = value.fallbackIfUnsupported()
+
+            if (field != finalValue) {
+                field = finalValue
                 updateBackdrop()
             }
         }
@@ -55,13 +57,21 @@ class WindowManager(
             when (backdropType) {
                 // For some reason, using setImmersiveDarkModeEnabled after setting accent policy to transparent
                 // results in solid red backdrop. So, we have to reset the transparent backdrop after using it.
+                // This is also required for updating emulated transparent effect
                 is WindowBackdrop.Transparent -> {
                     resetAccentPolicy()
-                    updateBackdrop()
+                    if (backdropType === lightTransparent || backdropType === darkTransparent) {
+                        backdropType = themedTransparent
+                    } else updateBackdrop()
                 }
 
                 // This is done to update the background color between white or black
                 is WindowBackdrop.Default -> updateBackdrop()
+
+                // Update the acrylic effect if it is an emulated effect
+                is WindowBackdrop.Acrylic -> {
+                    if (backdropType === lightAcrylic || backdropType === darkAcrylic) backdropType = themedAcrylic
+                }
 
                 else -> {
                     /* No action needed */
@@ -111,6 +121,7 @@ class WindowManager(
             }
         }
     }
+
 
     private fun setSystemBackdrop(systemBackdrop: DwmSystemBackdrop) {
         createSheetOfGlassEffect()
@@ -164,4 +175,32 @@ class WindowManager(
     private fun resetWindowFrame() {
         if (isSheetOfGlassApplied && Native.restoreWindowFrame(hwnd)) isSheetOfGlassApplied = false
     }
+
+
+    private fun WindowBackdrop.fallbackIfUnsupported(): WindowBackdrop {
+        if (windowsBuild >= supportedSince) return this
+
+        return when (this) {
+            is WindowBackdrop.Tabbed -> WindowBackdrop.Mica
+            is WindowBackdrop.Mica -> themedAcrylic
+            is WindowBackdrop.Acrylic -> {
+                // Aero isn't customizable and too transparent for background
+                // Manual mapping of themedAcrylic is to keep the theming working as expected
+                if (this === lightAcrylic || this === darkAcrylic) themedTransparent
+                else WindowBackdrop.Transparent(color)
+            }
+            else -> WindowBackdrop.Default
+        }.fallbackIfUnsupported()
+    }
+
+    private val lightFallback = Color(0xEFFFFFFFL)
+    private val darkFallback = Color(0xEF000000L)
+
+    private val lightAcrylic = WindowBackdrop.Acrylic(lightFallback)
+    private val darkAcrylic = WindowBackdrop.Acrylic(darkFallback)
+    private val themedAcrylic get() = if (isDarkTheme) darkAcrylic else lightAcrylic
+
+    private val lightTransparent = WindowBackdrop.Transparent(lightFallback)
+    private val darkTransparent = WindowBackdrop.Transparent(darkFallback)
+    private val themedTransparent get() = if (isDarkTheme) darkTransparent else lightTransparent
 }
