@@ -6,6 +6,7 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
@@ -54,12 +55,12 @@ fun main() = application {
 val themeOptions = listOf(false to "Light", true to "Dark")
 val backdropOptions = listOf(
     WindowBackdrop.Default to "Default",
-    WindowBackdrop.Solid(0xFF0000) to "Solid Red",
-    WindowBackdrop.Solid(0x0000FF) to "Solid Blue",
+    WindowBackdrop.Solid(Color.Red) to "Solid Red",
+    WindowBackdrop.Solid(Color.Blue) to "Solid Blue",
     WindowBackdrop.Transparent to "Transparent",
     WindowBackdrop.Aero to "Aero",
-    WindowBackdrop.Acrylic(0xFF0000) to "Acrylic Red",
-    WindowBackdrop.Acrylic(0x0000FF) to "Acrylic Blue",
+    WindowBackdrop.Acrylic(Color.Magenta.copy(alpha = 0.25F)) to "Acrylic Magenta",
+    WindowBackdrop.Acrylic(Color.Cyan.copy(alpha = 0.25F)) to "Acrylic Cyan",
     WindowBackdrop.Mica to "Mica",
     WindowBackdrop.Tabbed to "Tabbed",
 )

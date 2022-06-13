@@ -11,7 +11,6 @@ import com.mayakapps.compose.windowstyler.WindowManager.setSystemBackdrop
 import com.mayakapps.compose.windowstyler.jna.enums.AccentFlag
 import com.mayakapps.compose.windowstyler.jna.enums.AccentState
 import javax.swing.SwingUtilities
-import javax.swing.UIManager
 
 @Composable
 fun FrameWindowScope.WindowStyle(
@@ -76,19 +75,9 @@ fun FrameWindowScope.WindowStyle(
 
                     setAccentPolicy(
                         hwnd = hwnd,
-                        accentState = when (backdropType) {
-                            is WindowBackdrop.Default, is WindowBackdrop.Solid -> AccentState.ACCENT_ENABLE_GRADIENT
-                            is WindowBackdrop.Aero -> AccentState.ACCENT_ENABLE_BLURBEHIND
-                            is WindowBackdrop.Acrylic -> AccentState.ACCENT_ENABLE_ACRYLICBLURBEHIND
-                            else -> throw IllegalStateException()
-                        },
+                        accentState = backdropType.toAccentState(),
                         accentFlags = setOf(AccentFlag.DRAW_ALL_BORDERS),
-                        color = when (backdropType) {
-                            is WindowBackdrop.Default -> UIManager.getColor("Panel.background").rgb
-                            is WindowBackdrop.Solid -> backdropType.color
-                            is WindowBackdrop.Acrylic -> backdropType.color
-                            else -> 0x7FFFFFFF
-                        },
+                        color = (backdropType as? ColorableWindowBackdrop)?.color?.toAbgr() ?: 0x0FFFFFFF,
                     )
                 }
             }
