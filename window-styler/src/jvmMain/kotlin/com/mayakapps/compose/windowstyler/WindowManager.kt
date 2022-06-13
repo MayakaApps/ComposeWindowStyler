@@ -87,8 +87,7 @@ class WindowManager(
         // If the window isn't shown yet, and we try to apply Default, Solid, Aero,
         // or Acrylic, the effect will be applied to the title bar background
         // leaving the caption with awkward background box.
-        // Unfortunately, even with this method, mica in light mode has this
-        // background box.
+        // Unfortunately, even with this method, mica has this background box.
         SwingUtilities.invokeLater {
             // Only on later Windows 11 versions and if effect is WindowEffect.mica,
             // WindowEffect.acrylic or WindowEffect.tabbed, otherwise fallback to old
