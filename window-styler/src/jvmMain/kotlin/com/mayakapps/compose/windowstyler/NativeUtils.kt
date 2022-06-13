@@ -34,6 +34,7 @@ internal fun WindowBackdrop.toDwmSystemBackdrop(): DwmSystemBackdrop =
 internal fun WindowBackdrop.toAccentState(): AccentState =
     when (this) {
         is WindowBackdrop.Default, is WindowBackdrop.Solid -> AccentState.ACCENT_ENABLE_GRADIENT
+        is WindowBackdrop.Transparent -> AccentState.ACCENT_ENABLE_TRANSPARENTGRADIENT
         is WindowBackdrop.Aero -> AccentState.ACCENT_ENABLE_BLURBEHIND
         is WindowBackdrop.Acrylic -> AccentState.ACCENT_ENABLE_ACRYLICBLURBEHIND
         else -> AccentState.ACCENT_DISABLED
