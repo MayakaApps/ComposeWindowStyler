@@ -29,6 +29,19 @@ fun FrameWindowScope.WindowStyle(
     if (windowsBuild >= 17763) {
         LaunchedEffect(isDarkTheme) {
             setImmersiveDarkModeEnabled(hwnd, isDarkTheme)
+
+            // For some reason, using setImmersiveDarkModeEnabled after setting accent policy to transparent
+            // results in solid red backdrop. So, we have to reset the transparent backdrop after using it.
+            val finalLastEffect = lastEffect
+            if (finalLastEffect is WindowBackdrop.Transparent) {
+                setAccentPolicy(hwnd, AccentState.ACCENT_DISABLED)
+                setAccentPolicy(
+                    hwnd = hwnd,
+                    accentState = backdropType.toAccentState(),
+                    accentFlags = setOf(AccentFlag.DRAW_ALL_BORDERS),
+                    color = finalLastEffect.color.toAbgrForTransparent(),
+                )
+            }
         }
     }
 
@@ -42,8 +55,6 @@ fun FrameWindowScope.WindowStyle(
         SwingUtilities.invokeLater {
             // Set [ACCENT_DISABLED] as [ACCENT_POLICY] to apply styles properly.
             setAccentPolicy(hwnd, AccentState.ACCENT_DISABLED)
-
-            if (backdropType is WindowBackdrop.Transparent) return@invokeLater
 
             // Only on later Windows 11 versions and if effect is WindowEffect.mica,
             // WindowEffect.acrylic or WindowEffect.tabbed, otherwise fallback to old
@@ -73,11 +84,17 @@ fun FrameWindowScope.WindowStyle(
                         setMicaEffectEnabled(hwnd, false)
                     }
 
+                    val color = when (backdropType) {
+                        is WindowBackdrop.Transparent -> backdropType.color.toAbgrForTransparent()
+                        is ColorableWindowBackdrop -> backdropType.color.toAbgr()
+                        else -> 0x7FFFFFFF
+                    }
+
                     setAccentPolicy(
                         hwnd = hwnd,
                         accentState = backdropType.toAccentState(),
                         accentFlags = setOf(AccentFlag.DRAW_ALL_BORDERS),
-                        color = (backdropType as? ColorableWindowBackdrop)?.color?.toAbgr() ?: 0x0FFFFFFF,
+                        color = color,
                     )
                 }
             }
