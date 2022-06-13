@@ -1,6 +1,7 @@
 package com.mayakapps.compose.windowstyler
 
 import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.window.FrameWindowScope
 import com.mayakapps.compose.windowstyler.WindowManager.createSheetOfGlassEffect
 import com.mayakapps.compose.windowstyler.WindowManager.restoreWindowFrame
@@ -24,28 +25,32 @@ fun FrameWindowScope.WindowStyle(
 
     val hwnd = remember { window.windowHWND }
 
+    var forceUpdateEffect by remember { mutableStateOf(0) }
     var lastEffect by remember { mutableStateOf<WindowBackdrop?>(null) }
 
     if (windowsBuild >= 17763) {
         LaunchedEffect(isDarkTheme) {
             setImmersiveDarkModeEnabled(hwnd, isDarkTheme)
 
-            // For some reason, using setImmersiveDarkModeEnabled after setting accent policy to transparent
-            // results in solid red backdrop. So, we have to reset the transparent backdrop after using it.
-            val finalLastEffect = lastEffect
-            if (finalLastEffect is WindowBackdrop.Transparent) {
-                setAccentPolicy(hwnd, AccentState.ACCENT_DISABLED)
-                setAccentPolicy(
-                    hwnd = hwnd,
-                    accentState = backdropType.toAccentState(),
-                    accentFlags = setOf(AccentFlag.DRAW_ALL_BORDERS),
-                    color = finalLastEffect.color.toAbgrForTransparent(),
-                )
+            when (lastEffect) {
+                // For some reason, using setImmersiveDarkModeEnabled after setting accent policy to transparent
+                // results in solid red backdrop. So, we have to reset the transparent backdrop after using it.
+                is WindowBackdrop.Transparent -> {
+                    setAccentPolicy(hwnd, AccentState.ACCENT_DISABLED)
+                    forceUpdateEffect++
+                }
+
+                // This is done to update the background color between white or black
+                is WindowBackdrop.Default -> forceUpdateEffect++
+
+                else -> {
+                    /* No action needed */
+                }
             }
         }
     }
 
-    LaunchedEffect(backdropType) {
+    LaunchedEffect(backdropType, forceUpdateEffect) {
         // This is done to make sure that the window has become visible
         // If the window isn't shown yet, and we try to apply Default, Solid, Aero,
         // or Acrylic, the effect will be applied to the title bar background
@@ -85,6 +90,9 @@ fun FrameWindowScope.WindowStyle(
                     }
 
                     val color = when (backdropType) {
+                        // As the transparency hack is irreversible, the default effect is applied by solid backdrop.
+                        // The default color is white or black depending on the theme
+                        is WindowBackdrop.Default -> (if (isDarkTheme) Color.Black else Color.White).toAbgr()
                         is WindowBackdrop.Transparent -> backdropType.color.toAbgrForTransparent()
                         is ColorableWindowBackdrop -> backdropType.color.toAbgr()
                         else -> 0x7FFFFFFF
