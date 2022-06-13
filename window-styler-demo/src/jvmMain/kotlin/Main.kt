@@ -1,5 +1,6 @@
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
@@ -21,18 +22,16 @@ fun App(
     backdropType: WindowBackdrop,
     onBackdropChange: (WindowBackdrop) -> Unit,
 ) {
-    MaterialTheme(colors = if (isDarkTheme) darkColors() else lightColors()) {
-        Column(
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            RadioGroup("Theme", themeOptions, isDarkTheme, onThemeChange)
-            Spacer(Modifier.height(50.dp))
-            RadioGroup("Backdrop Type", backdropOptions, backdropType, onBackdropChange)
-        }
+    Column(
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        RadioGroup("Theme", themeOptions, isDarkTheme, onThemeChange)
+        Spacer(Modifier.height(50.dp))
+        RadioGroup("Backdrop Type", backdropOptions, backdropType, onBackdropChange)
     }
 }
 
@@ -43,12 +42,16 @@ fun main() = application {
 
         WindowStyle(isDarkTheme = isDarkTheme, backdropType = backdropType)
 
-        App(
-            isDarkTheme = isDarkTheme,
-            onThemeChange = { isDarkTheme = it },
-            backdropType = backdropType,
-            onBackdropChange = { backdropType = it },
-        )
+        MaterialTheme(colors = if (isDarkTheme) darkColors() else lightColors()) {
+            CompositionLocalProvider(LocalContentColor provides MaterialTheme.colors.onBackground) {
+                App(
+                    isDarkTheme = isDarkTheme,
+                    onThemeChange = { isDarkTheme = it },
+                    backdropType = backdropType,
+                    onBackdropChange = { backdropType = it },
+                )
+            }
+        }
     }
 }
 
