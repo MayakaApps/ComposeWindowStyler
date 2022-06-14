@@ -6,11 +6,11 @@ import com.mayakapps.compose.windowstyler.jna.enums.AccentFlag
 import com.mayakapps.compose.windowstyler.jna.enums.AccentState
 import com.mayakapps.compose.windowstyler.jna.enums.DwmSystemBackdrop
 import com.sun.jna.platform.win32.WinDef.HWND
-import javax.swing.JFrame
+import java.awt.Window
 import javax.swing.SwingUtilities
 
 class WindowManager(
-    window: JFrame,
+    window: Window,
     isDarkTheme: Boolean = false,
     backdropType: WindowBackdrop = WindowBackdrop.Default,
 ) {
