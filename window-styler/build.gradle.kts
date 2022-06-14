@@ -32,20 +32,3 @@ kotlin {
         }
     }
 }
-
-configure<PublishingExtension> {
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            setUrl("https://maven.pkg.github.com/MayakaApps/ComposeWindowStyler")
-
-            credentials {
-                username = project.properties["GITHUB_USER"] as String?
-                    ?: System.getenv("GITHUB_ACTOR")
-
-                password = project.properties["GITHUB_PUBLISHING_TOKEN"] as String?
-                    ?: System.getenv("GITHUB_PUBLISHING_TOKEN")
-            }
-        }
-    }
-}
