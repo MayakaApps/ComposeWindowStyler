@@ -2,6 +2,10 @@ package com.mayakapps.compose.windowstyler
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.colorspace.connect
+import java.awt.Window
+import javax.swing.JDialog
+import javax.swing.JFrame
+import javax.swing.JWindow
 
 // Modified version of toArgb
 internal fun Color.toAbgr(): Int {
@@ -21,3 +25,18 @@ internal fun Color.toAbgr(): Int {
 // transparent accent policy results in solid red color. As a workaround, we pass
 // fully transparent white which has the same visual effect.
 internal fun Color.toAbgrForTransparent() = if (alpha == 0F) 0x00FFFFFF else toAbgr()
+
+// Try hard to get the contentPane
+internal var Window.contentPane
+    get() = when (this) {
+        is JFrame -> contentPane
+        is JDialog -> contentPane
+        is JWindow -> contentPane
+        else -> null
+    }
+    set(value) = when (this) {
+        is JFrame -> contentPane = value
+        is JDialog -> contentPane = value
+        is JWindow -> contentPane = value
+        else -> throw IllegalStateException()
+    }

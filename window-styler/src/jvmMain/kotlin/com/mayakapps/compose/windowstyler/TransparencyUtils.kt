@@ -5,8 +5,8 @@ import org.jetbrains.skiko.SkiaLayer
 import java.awt.BorderLayout
 import java.awt.Color
 import java.awt.Component
+import java.awt.Window
 import javax.swing.JComponent
-import javax.swing.JFrame
 
 internal fun ComposeWindow.setComposeLayerTransparency(isTransparent: Boolean) {
     val delegate = delegateField.get(this@setComposeLayerTransparency)
@@ -16,7 +16,9 @@ internal fun ComposeWindow.setComposeLayerTransparency(isTransparent: Boolean) {
     component.transparency = isTransparent
 }
 
-internal fun JFrame.hackContentPane() {
+internal fun Window.hackContentPane() {
+    val oldContentPane = contentPane ?: return
+
     // Create hacked content pane the same way of AWT
     val newContentPane: JComponent = HackedContentPane()
     newContentPane.name = "$name.contentPane"
@@ -28,7 +30,7 @@ internal fun JFrame.hackContentPane() {
 
     newContentPane.background = Color(0, 0, 0, 0)
 
-    contentPane.components.forEach { newContentPane.add(it) }
+    oldContentPane.components.forEach { newContentPane.add(it) }
 
     contentPane = newContentPane
 }
