@@ -8,11 +8,7 @@ import javax.swing.JDialog
 import javax.swing.JWindow
 
 internal fun ComposeWindow.setComposeLayerTransparency(isTransparent: Boolean) {
-    val delegate = delegateField.get(this@setComposeLayerTransparency)
-    val layer = getLayerMethod.invoke(delegate)
-    val component = getComponentMethod.invoke(layer) as SkiaLayer
-
-    component.transparency = isTransparent
+    skiaLayer.transparency = isTransparent
 }
 
 internal fun Window.hackContentPane() {
@@ -34,6 +30,19 @@ internal fun Window.hackContentPane() {
     contentPane = newContentPane
 }
 
+
+internal val ComposeWindow.skiaLayer: SkiaLayer
+    get() {
+        val delegate = delegateField.get(this)
+        val layer = getLayerMethod.invoke(delegate)
+        return getComponentMethod.invoke(layer) as SkiaLayer
+    }
+
+internal val Window.isTransparent
+    get() = when (this) {
+        is ComposeWindow -> skiaLayer.transparency
+        else -> background.alpha != 255
+    }
 
 internal val Window.isUndecorated
     get() = when (this) {
