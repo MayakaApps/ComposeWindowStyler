@@ -7,6 +7,8 @@ import com.mayakapps.compose.windowstyler.jna.enums.AccentState
 import com.mayakapps.compose.windowstyler.jna.enums.DwmSystemBackdrop
 import com.sun.jna.platform.win32.WinDef.HWND
 import java.awt.Window
+import java.awt.event.WindowAdapter
+import java.awt.event.WindowEvent
 import javax.swing.SwingUtilities
 
 class WindowManager(
@@ -16,6 +18,7 @@ class WindowManager(
 ) {
 
     private val hwnd: HWND = window.hwnd
+    private val isUndecorated = window.isUndecorated
 
     var isDarkTheme: Boolean = isDarkTheme
         set(value) {
@@ -36,12 +39,29 @@ class WindowManager(
             }
         }
 
+    // This is a workaround for transparency getting replaced by red opaque color for decorated windows on focus
+    // changes. This workaround doesn't appear to be efficient, and there may be red flashes on losing/gaining focus.
+    // Yet, it seems to be enough for the limited use cases of transparent decorated
+    private val windowAdapter = object : WindowAdapter() {
+        override fun windowGainedFocus(e: WindowEvent?) = resetTransparent()
+        override fun windowLostFocus(e: WindowEvent?) = resetTransparent()
+
+        private fun resetTransparent() {
+            if (!isUndecorated && this@WindowManager.backdropType is WindowBackdrop.Transparent) {
+                resetAccentPolicy()
+                updateBackdrop()
+            }
+        }
+    }
+
     init {
         // invokeLater is called to make sure that ComposeLayer was initialized first
         SwingUtilities.invokeLater {
             // For some reason, reversing the order of these two calls doesn't work.
             if (window is ComposeWindow) window.setComposeLayerTransparency(true)
             window.hackContentPane()
+
+            window.addWindowFocusListener(windowAdapter)
 
             updateTheme()
             updateBackdrop()
