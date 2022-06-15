@@ -1,10 +1,17 @@
 # Compose Window Styler
 
-**Compose Window Styler is a library that lets you style your Compose for Desktop window to have more native and modern UI.**
+![Compose Window Styler](https://img.shields.io/badge/Compose-Window%20Styler-blue?logo=jetpackcompose)
+[![GitHub stars](https://img.shields.io/github/stars/MayakaApps/ComposeWindowStyler)](https://github.com/MayakaApps/ComposeWindowStyler/stargazers)
+[![GitHub license](https://img.shields.io/github/license/MayakaApps/ComposeWindowStyler)](https://github.com/MayakaApps/ComposeWindowStyler/blob/main/LICENSE)
+![Maven Central](https://img.shields.io/maven-central/v/com.mayakapps.compose/window-styler)
+![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/com.mayakapps.compose/window-styler?server=https%3A%2F%2Fs01.oss.sonatype.org)
+[![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2FMayakaApps%2FComposeWindowStyler)](https://twitter.com/intent/tweet?text=Compose%20Window%20Styler%20is%20a%20library%20that%20lets%20you%20style%20your%20Compose%20for%20Desktop%20window%20to%20have%20more%20native%20and%20modern%20UI.:&url=https%3A%2F%2Fgithub.com%2FMayakaApps%2FComposeWindowStyler)
+
+**Compose Window Styler is a library that lets you style your Compose for Desktop window to have more native and modern UI. This includes styling the window to use  acrylic, mica ...etc.**
 
 ---
 
-![Demo Screenshot](docs/sample.png)
+![Demo Screenshot](docs/demo_preview.webp)
 
 ---
 
@@ -15,6 +22,9 @@ Kotlin DSL:
 ```kotlin
 repositories {
     mavenCentral()
+    
+    // Add only if you're using snapshot version
+    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
 }
 
 dependencies {
@@ -27,6 +37,9 @@ Groovy DSL:
 ```gradle
 repositories {
     mavenCentral()
+    
+    // Add only if you're using snapshot version
+    maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
 }
 
 dependencies {
@@ -34,7 +47,7 @@ dependencies {
 }
 ```
 
-Don't forget to replace `<version>` with the latest/desired version found on Maven Central or here in the releases section.
+Don't forget to replace `<version>` with the latest/desired version found on the badges above.
 
 ## Usage
 
@@ -43,7 +56,7 @@ You can apply the desired to your window by using `WindowStyle` inside the `Fram
 Sample Code:
 
 ```kotlin
-Window(onCloseRequest = ::exitApplication)
+Window(onCloseRequest = ::exitApplication) {
     WindowStyle(isDarkTheme = isSystemInDarkTheme(), backdropType = WindowBackdrop.Mica)
     App()
 }
@@ -78,9 +91,9 @@ Aero is dropped as it is much more transparent than `Tabbed` or `Mica` and not c
 
 This library is distributed under the MIT license.
 
-## Contribution
+## Contributing
 
-All contributions are welcomed. If you reporting an issue, please use the issue template. If you're planning to contribute to the code, please open an issue first describing what feature you're planning to add or what issue you're planning to fix. This will allow better discussion and coordination of efforts. You can also check any open issues for bugs/features that needs to be fixed/implemented.
+All contributions are welcome. If you are reporting an issue, please use the provided template. If you're planning to contribute to the code, please open an issue first describing what feature you're planning to add or what issue you're planning to fix. This allows better discussion and coordination of efforts. You can also check open issues for bugs/features that needs to be fixed/implemented.
 
 ## Acknowledgements
 * [flutter_acrylic](https://github.com/alexmercerind/flutter_acrylic): This library is heavily based on flutter_acrylic
