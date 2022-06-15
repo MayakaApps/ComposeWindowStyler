@@ -2,11 +2,10 @@ package com.mayakapps.compose.windowstyler
 
 import androidx.compose.ui.awt.ComposeWindow
 import org.jetbrains.skiko.SkiaLayer
-import java.awt.BorderLayout
-import java.awt.Color
-import java.awt.Component
-import java.awt.Window
+import java.awt.*
 import javax.swing.JComponent
+import javax.swing.JDialog
+import javax.swing.JWindow
 
 internal fun ComposeWindow.setComposeLayerTransparency(isTransparent: Boolean) {
     val delegate = delegateField.get(this@setComposeLayerTransparency)
@@ -34,6 +33,15 @@ internal fun Window.hackContentPane() {
 
     contentPane = newContentPane
 }
+
+
+internal val Window.isUndecorated
+    get() = when (this) {
+        is Frame -> isUndecorated
+        is JDialog -> isUndecorated
+        is JWindow -> true
+        else -> false
+    }
 
 
 private val delegateField by lazy {
