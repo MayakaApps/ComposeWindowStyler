@@ -36,7 +36,10 @@ fun App(
 }
 
 fun main() = application {
-    Window(onCloseRequest = ::exitApplication) {
+    Window(
+        onCloseRequest = ::exitApplication,
+        title = "Compose Window Styler Demo",
+    ) {
         var isDarkTheme by remember { mutableStateOf(false) }
         var backdropType by remember { mutableStateOf<WindowBackdrop>(WindowBackdrop.Default) }
 
