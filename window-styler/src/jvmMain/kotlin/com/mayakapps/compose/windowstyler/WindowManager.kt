@@ -57,9 +57,12 @@ class WindowManager(
     init {
         // invokeLater is called to make sure that ComposeLayer was initialized first
         SwingUtilities.invokeLater {
-            // For some reason, reversing the order of these two calls doesn't work.
-            if (window is ComposeWindow) window.setComposeLayerTransparency(true)
-            window.hackContentPane()
+            // If the window is not already transparent, hack it to be transparent
+            if (!window.isTransparent) {
+                // For some reason, reversing the order of these two calls doesn't work.
+                if (window is ComposeWindow) window.setComposeLayerTransparency(true)
+                window.hackContentPane()
+            }
 
             window.addWindowFocusListener(windowAdapter)
 
