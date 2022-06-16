@@ -48,10 +48,7 @@ class WindowsWindowManager(
         override fun windowLostFocus(e: WindowEvent?) = resetTransparent()
 
         private fun resetTransparent() {
-            if (!isUndecorated && this@WindowsWindowManager.backdropType is WindowBackdrop.Transparent) {
-                resetAccentPolicy()
-                updateBackdrop()
-            }
+            if (!isUndecorated && this@WindowsWindowManager.backdropType is WindowBackdrop.Transparent) updateBackdrop()
         }
     }
 
@@ -80,25 +77,15 @@ class WindowsWindowManager(
 
     private fun updateTheme() {
         if (windowsBuild >= 17763 && Native.setImmersiveDarkModeEnabled(hwnd, isDarkTheme)) {
-            when (backdropType) {
-                // For some reason, using setImmersiveDarkModeEnabled after setting accent policy to transparent
-                // results in solid red backdrop. So, we have to reset the transparent backdrop after using it.
-                // This is also required for updating emulated transparent effect
-                is WindowBackdrop.Transparent -> {
-                    resetAccentPolicy()
-                    updateBackdrop()
-                }
-
-                // This is done to update the background color between white or black
-                is WindowBackdrop.Default -> updateBackdrop()
-
-                // Update the acrylic effect if it is themed
-                is WindowBackdrop.Acrylic -> if (backdropType is ThemedAcrylic) updateBackdrop()
-
-                else -> {
-                    /* No action needed */
-                }
-            }
+            // Default: This is done to update the background color between white or black
+            // ThemedAcrylic: Update the acrylic effect if it is themed
+            // Transparent:
+            // For some reason, using setImmersiveDarkModeEnabled after setting accent policy to transparent
+            // results in solid red backdrop. So, we have to reset the transparent backdrop after using it.
+            // This is also required for updating emulated transparent effect
+            if (backdropType is WindowBackdrop.Default || backdropType is ThemedAcrylic ||
+                backdropType is WindowBackdrop.Transparent
+            ) updateBackdrop()
         }
     }
 
@@ -133,8 +120,16 @@ class WindowsWindowManager(
                         else -> 0x7FFFFFFF
                     }
 
-                    // This is required as sometimes the window gets stuck at aero
-                    if (wasAero) resetAccentPolicy()
+                    // wasAero: This is required as sometimes the window gets stuck at aero
+                    // Transparent: In many cases, if this is not done, red opaque background is shown
+                    if (wasAero || backdropType is WindowBackdrop.Transparent) resetAccentPolicy()
+
+                    // Another red opaque background case :'(
+                    // Resetting these values needs to be done before applying transparency
+                    if (backdropType is WindowBackdrop.Transparent) {
+                        resetMicaEffectEnabled()
+                        resetSystemBackdrop()
+                    }
 
                     setAccentPolicy(
                         accentState = backdropType.toAccentState(),
