@@ -2,6 +2,7 @@ package com.mayakapps.compose.windowstyler.windows.jna
 
 import com.mayakapps.compose.windowstyler.windows.jna.enums.DwmSystemBackdrop
 import com.mayakapps.compose.windowstyler.windows.jna.enums.DwmWindowAttribute
+import com.mayakapps.compose.windowstyler.windows.jna.enums.DwmWindowCornerPreference
 import com.mayakapps.compose.windowstyler.windows.jna.structs.Margins
 import com.sun.jna.Native
 import com.sun.jna.PointerType
@@ -33,13 +34,17 @@ internal object Dwm {
         return result == W32Errors.S_OK
     }
 
+
     fun setSystemBackdrop(hwnd: HWND, systemBackdrop: DwmSystemBackdrop): Boolean =
         setWindowAttribute(hwnd, DwmWindowAttribute.DWMWA_SYSTEMBACKDROP_TYPE, systemBackdrop.value)
+
+    fun setWindowCornerPreference(hwnd: HWND, cornerPreference: DwmWindowCornerPreference): Boolean =
+        setWindowAttribute(hwnd, DwmWindowAttribute.DWMWA_WINDOW_CORNER_PREFERENCE, cornerPreference.value)
 
     fun setWindowAttribute(hwnd: HWND, attribute: DwmWindowAttribute, value: Boolean) =
         setWindowAttribute(hwnd, attribute, WinDef.BOOLByReference(WinDef.BOOL(value)), WinDef.BOOL.SIZE)
 
-    private fun setWindowAttribute(hwnd: HWND, attribute: DwmWindowAttribute, value: Int) =
+    fun setWindowAttribute(hwnd: HWND, attribute: DwmWindowAttribute, value: Int) =
         setWindowAttribute(hwnd, attribute, IntByReference(value), INT_SIZE)
 
     private fun setWindowAttribute(
