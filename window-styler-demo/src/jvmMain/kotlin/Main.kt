@@ -12,6 +12,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import com.mayakapps.compose.windowstyler.WindowBackdrop
+import com.mayakapps.compose.windowstyler.WindowCornerPreference
+import com.mayakapps.compose.windowstyler.WindowFrameStyle
 import com.mayakapps.compose.windowstyler.WindowStyle
 
 @Composable
@@ -43,7 +45,11 @@ fun main() = application {
         var isDarkTheme by remember { mutableStateOf(false) }
         var backdropType by remember { mutableStateOf<WindowBackdrop>(WindowBackdrop.Default) }
 
-        WindowStyle(isDarkTheme = isDarkTheme, backdropType = backdropType)
+        WindowStyle(
+            isDarkTheme = isDarkTheme,
+            backdropType = backdropType,
+            frameStyle = WindowFrameStyle(cornerPreference = WindowCornerPreference.NOT_ROUNDED),
+        )
 
         MaterialTheme(colors = if (isDarkTheme) darkColors() else lightColors()) {
             CompositionLocalProvider(LocalContentColor provides MaterialTheme.colors.onBackground) {
