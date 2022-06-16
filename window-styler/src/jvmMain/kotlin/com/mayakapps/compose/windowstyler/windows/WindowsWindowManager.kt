@@ -16,7 +16,7 @@ class WindowsWindowManager(
     window: Window,
     isDarkTheme: Boolean = false,
     backdropType: WindowBackdrop = WindowBackdrop.Default,
-): WindowManager {
+) : WindowManager {
 
     private val hwnd: HWND = window.hwnd
     private val isUndecorated = window.isUndecorated
@@ -86,18 +86,14 @@ class WindowsWindowManager(
                 // This is also required for updating emulated transparent effect
                 is WindowBackdrop.Transparent -> {
                     resetAccentPolicy()
-                    if (backdropType === lightTransparent || backdropType === darkTransparent) {
-                        backdropType = themedTransparent
-                    } else updateBackdrop()
+                    updateBackdrop()
                 }
 
                 // This is done to update the background color between white or black
                 is WindowBackdrop.Default -> updateBackdrop()
 
-                // Update the acrylic effect if it is an emulated effect
-                is WindowBackdrop.Acrylic -> {
-                    if (backdropType === lightAcrylic || backdropType === darkAcrylic) backdropType = themedAcrylic
-                }
+                // Update the acrylic effect if it is themed
+                is WindowBackdrop.Acrylic -> if (backdropType is ThemedAcrylic) updateBackdrop()
 
                 else -> {
                     /* No action needed */
@@ -214,21 +210,26 @@ class WindowsWindowManager(
             is WindowBackdrop.Acrylic -> {
                 // Aero isn't customizable and too transparent for background
                 // Manual mapping of themedAcrylic is to keep the theming working as expected
-                if (this === lightAcrylic || this === darkAcrylic) themedTransparent
+                if (this is ThemedAcrylic) themedTransparent
                 else WindowBackdrop.Transparent(color)
             }
             else -> WindowBackdrop.Default
         }.fallbackIfUnsupported()
     }
 
-    private val lightFallback = Color(0xEFFFFFFFL)
-    private val darkFallback = Color(0xEF000000L)
+    private val themedTransparent = ThemedTransparent()
+    private val themedAcrylic = ThemedAcrylic()
 
-    private val lightAcrylic = WindowBackdrop.Acrylic(lightFallback)
-    private val darkAcrylic = WindowBackdrop.Acrylic(darkFallback)
-    private val themedAcrylic get() = if (isDarkTheme) darkAcrylic else lightAcrylic
+    private val themedFallbackColor
+        get() = if (isDarkTheme) Color(0xEF000000L) else Color(0xEFFFFFFFL)
 
-    private val lightTransparent = WindowBackdrop.Transparent(lightFallback)
-    private val darkTransparent = WindowBackdrop.Transparent(darkFallback)
-    private val themedTransparent get() = if (isDarkTheme) darkTransparent else lightTransparent
+    inner class ThemedAcrylic : WindowBackdrop.Acrylic(Color.Unspecified) {
+        override val color: Color
+            get() = themedFallbackColor
+    }
+
+    inner class ThemedTransparent : WindowBackdrop.Transparent(Color.Unspecified) {
+        override val color: Color
+            get() = themedFallbackColor
+    }
 }
