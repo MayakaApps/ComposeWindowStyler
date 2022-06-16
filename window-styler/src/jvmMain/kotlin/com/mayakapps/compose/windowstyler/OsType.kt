@@ -1,6 +1,6 @@
 package com.mayakapps.compose.windowstyler
 
-internal enum class OsType {
+enum class OsType {
     UNKNOWN,
     WINDOWS,
     LINUX,
