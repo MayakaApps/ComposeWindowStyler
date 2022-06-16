@@ -63,7 +63,7 @@ val backdropOptions = listOf(
     WindowBackdrop.Default to "Default",
     WindowBackdrop.Solid(Color.Red) to "Solid Red",
     WindowBackdrop.Solid(Color.Blue) to "Solid Blue",
-    WindowBackdrop.Transparent(Color.Transparent) to "Transparent",
+    WindowBackdrop.Transparent to "Transparent",
     WindowBackdrop.Transparent(Color.Yellow.copy(alpha = 0.25F)) to "Yellow Transparent",
     WindowBackdrop.Aero to "Aero",
     WindowBackdrop.Acrylic(Color.Magenta.copy(alpha = 0.25F)) to "Acrylic Magenta",
