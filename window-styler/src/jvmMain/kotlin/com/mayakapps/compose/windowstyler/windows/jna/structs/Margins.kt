@@ -1,4 +1,4 @@
-package com.mayakapps.compose.windowstyler.jna.structs
+package com.mayakapps.compose.windowstyler.windows.jna.structs
 
 import com.sun.jna.Structure
 

@@ -1,4 +1,4 @@
-package com.mayakapps.compose.windowstyler.jna.enums
+package com.mayakapps.compose.windowstyler.windows.jna.enums
 
 import com.sun.jna.ptr.IntByReference
 

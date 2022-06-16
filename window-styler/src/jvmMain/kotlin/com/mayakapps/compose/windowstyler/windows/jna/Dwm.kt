@@ -1,7 +1,7 @@
-package com.mayakapps.compose.windowstyler.jna
+package com.mayakapps.compose.windowstyler.windows.jna
 
-import com.mayakapps.compose.windowstyler.jna.enums.DwmWindowAttribute
-import com.mayakapps.compose.windowstyler.jna.structs.Margins
+import com.mayakapps.compose.windowstyler.windows.jna.enums.DwmWindowAttribute
+import com.mayakapps.compose.windowstyler.windows.jna.structs.Margins
 import com.sun.jna.Native
 import com.sun.jna.PointerType
 import com.sun.jna.platform.win32.WinDef.HWND

@@ -1,4 +1,4 @@
-package com.mayakapps.compose.windowstyler.jna
+package com.mayakapps.compose.windowstyler.windows.jna
 
 internal inline fun <T> Iterable<T>.orOf(selector: (T) -> Int): Int {
     var result = 0
