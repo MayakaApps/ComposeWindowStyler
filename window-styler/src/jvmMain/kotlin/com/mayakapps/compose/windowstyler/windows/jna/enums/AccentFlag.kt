@@ -1,7 +1,7 @@
 package com.mayakapps.compose.windowstyler.windows.jna.enums
 
 @Suppress("SpellCheckingInspection", "unused")
-enum class AccentFlag(val value: Int) {
+internal enum class AccentFlag(val value: Int) {
     NONE(0),
     DRAW_LEFT_BORDER(0x20),
     DRAW_TOP_BORDER(0x40),

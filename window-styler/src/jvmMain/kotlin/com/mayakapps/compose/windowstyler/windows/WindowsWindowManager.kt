@@ -3,9 +3,9 @@ package com.mayakapps.compose.windowstyler.windows
 import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.graphics.Color
 import com.mayakapps.compose.windowstyler.*
+import com.mayakapps.compose.windowstyler.windows.jna.Dwm
 import com.mayakapps.compose.windowstyler.windows.jna.enums.AccentFlag
-import com.mayakapps.compose.windowstyler.windows.jna.enums.AccentState
-import com.mayakapps.compose.windowstyler.windows.jna.enums.DwmSystemBackdrop
+import com.mayakapps.compose.windowstyler.windows.jna.enums.DwmWindowAttribute
 import com.sun.jna.platform.win32.WinDef.HWND
 import java.awt.Window
 import java.awt.event.WindowAdapter
@@ -20,6 +20,9 @@ class WindowsWindowManager(
 
     private val hwnd: HWND = window.hwnd
     private val isUndecorated = window.isUndecorated
+    private var wasAero = false
+
+    private val backdropApis = WindowsBackdropApis(hwnd)
 
     override var isDarkTheme: Boolean = isDarkTheme
         set(value) {
@@ -40,18 +43,6 @@ class WindowsWindowManager(
             }
         }
 
-    // This is a workaround for transparency getting replaced by red opaque color for decorated windows on focus
-    // changes. This workaround doesn't appear to be efficient, and there may be red flashes on losing/gaining focus.
-    // Yet, it seems to be enough for the limited use cases of transparent decorated
-    private val windowAdapter = object : WindowAdapter() {
-        override fun windowGainedFocus(e: WindowEvent?) = resetTransparent()
-        override fun windowLostFocus(e: WindowEvent?) = resetTransparent()
-
-        private fun resetTransparent() {
-            if (!isUndecorated && this@WindowsWindowManager.backdropType is WindowBackdrop.Transparent) updateBackdrop()
-        }
-    }
-
     init {
         // invokeLater is called to make sure that ComposeLayer was initialized first
         SwingUtilities.invokeLater {
@@ -62,21 +53,20 @@ class WindowsWindowManager(
                 window.hackContentPane()
             }
 
-            window.addWindowFocusListener(windowAdapter)
-
             updateTheme()
             updateBackdrop()
         }
     }
 
-    private var wasAero = false
-    private var isSystemBackdropSet = false
-    private var isMicaEnabled = false
-    private var isAccentPolicySet = false
-    private var isSheetOfGlassApplied = false
-
     private fun updateTheme() {
-        if (windowsBuild >= 17763 && Native.setImmersiveDarkModeEnabled(hwnd, isDarkTheme)) {
+        val attribute =
+            when {
+                windowsBuild < 17763 -> return
+                windowsBuild >= 18985 -> DwmWindowAttribute.DWMWA_USE_IMMERSIVE_DARK_MODE
+                else -> DwmWindowAttribute.DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1
+            }
+
+        if (windowsBuild >= 17763 && Dwm.setWindowAttribute(hwnd, attribute, isDarkTheme)) {
             // Default: This is done to update the background color between white or black
             // ThemedAcrylic: Update the acrylic effect if it is themed
             // Transparent:
@@ -103,12 +93,12 @@ class WindowsWindowManager(
                 windowsBuild >= 22523 &&
                 (backdropType is WindowBackdrop.Acrylic || backdropType is WindowBackdrop.Mica || backdropType is WindowBackdrop.Tabbed)
             ) {
-                setSystemBackdrop(backdropType.toDwmSystemBackdrop())
+                backdropApis.setSystemBackdrop(backdropType.toDwmSystemBackdrop())
             } else {
                 if (backdropType is WindowBackdrop.Mica) {
                     // Check for Windows 11.
                     if (windowsBuild >= 22000) {
-                        setMicaEffectEnabled(true)
+                        backdropApis.setMicaEffectEnabled(true)
                     }
                 } else {
                     val color = when (val backdropType = backdropType) {
@@ -122,16 +112,16 @@ class WindowsWindowManager(
 
                     // wasAero: This is required as sometimes the window gets stuck at aero
                     // Transparent: In many cases, if this is not done, red opaque background is shown
-                    if (wasAero || backdropType is WindowBackdrop.Transparent) resetAccentPolicy()
+                    if (wasAero || backdropType is WindowBackdrop.Transparent) backdropApis.resetAccentPolicy()
 
                     // Another red opaque background case :'(
                     // Resetting these values needs to be done before applying transparency
                     if (backdropType is WindowBackdrop.Transparent) {
-                        resetMicaEffectEnabled()
-                        resetSystemBackdrop()
+                        backdropApis.resetMicaEffectEnabled()
+                        backdropApis.resetSystemBackdrop()
                     }
 
-                    setAccentPolicy(
+                    backdropApis.setAccentPolicy(
                         accentState = backdropType.toAccentState(),
                         accentFlags = setOf(AccentFlag.DRAW_ALL_BORDERS),
                         color = color,
@@ -141,60 +131,9 @@ class WindowsWindowManager(
         }
     }
 
-
-    private fun setSystemBackdrop(systemBackdrop: DwmSystemBackdrop) {
-        createSheetOfGlassEffect()
-        if (Native.setSystemBackdrop(hwnd, systemBackdrop)) {
-            isSystemBackdropSet = systemBackdrop == DwmSystemBackdrop.DWMSBT_DISABLE
-            if (isSystemBackdropSet) resetAccentPolicy()
-        }
-    }
-
-    private fun setMicaEffectEnabled(enabled: Boolean) {
-        createSheetOfGlassEffect()
-        if (Native.setMicaEffectEnabled(hwnd, enabled)) {
-            isMicaEnabled = enabled
-            if (isMicaEnabled) resetAccentPolicy()
-        }
-    }
-
-    private fun setAccentPolicy(
-        accentState: AccentState = AccentState.ACCENT_DISABLED,
-        accentFlags: Set<AccentFlag> = emptySet(),
-        color: Int = 0,
-        animationId: Int = 0,
-    ) {
-        if (Native.setAccentPolicy(hwnd, accentState, accentFlags, color, animationId)) {
-            isAccentPolicySet = accentState != AccentState.ACCENT_DISABLED
-            if (isAccentPolicySet) {
-                resetSystemBackdrop()
-                resetMicaEffectEnabled()
-                resetWindowFrame()
-            }
-        }
-    }
-
-    private fun createSheetOfGlassEffect() {
-        if (!isSheetOfGlassApplied && Native.createSheetOfGlassEffect(hwnd)) isSheetOfGlassApplied = true
-    }
-
-
-    private fun resetSystemBackdrop() {
-        if (isSystemBackdropSet) setSystemBackdrop(DwmSystemBackdrop.DWMSBT_DISABLE)
-    }
-
-    private fun resetMicaEffectEnabled() {
-        if (isMicaEnabled) setMicaEffectEnabled(false)
-    }
-
-    private fun resetAccentPolicy() {
-        if (isAccentPolicySet) setAccentPolicy(AccentState.ACCENT_DISABLED)
-    }
-
-    private fun resetWindowFrame() {
-        if (isSheetOfGlassApplied && Native.restoreWindowFrame(hwnd)) isSheetOfGlassApplied = false
-    }
-
+    /*
+     * Fallback Strategy
+     */
 
     private fun WindowBackdrop.fallbackIfUnsupported(): WindowBackdrop {
         if (windowsBuild >= supportedSince) return this
@@ -226,5 +165,33 @@ class WindowsWindowManager(
     inner class ThemedTransparent : WindowBackdrop.Transparent(Color.Unspecified) {
         override val color: Color
             get() = themedFallbackColor
+    }
+
+    private val WindowBackdrop.supportedSince
+        get() = when (this) {
+            is WindowBackdrop.Acrylic -> 17063
+            is WindowBackdrop.Mica -> 22000
+            is WindowBackdrop.Tabbed -> 22523
+            else -> 0
+        }
+
+    /*
+     * Focus Listener for transparency workaround
+     */
+
+    // This is a workaround for transparency getting replaced by red opaque color for decorated windows on focus
+    // changes. This workaround doesn't appear to be efficient, and there may be red flashes on losing/gaining focus.
+    // Yet, it seems to be enough for the limited use cases of transparent decorated
+    private val windowAdapter = object : WindowAdapter() {
+        override fun windowGainedFocus(e: WindowEvent?) = resetTransparent()
+        override fun windowLostFocus(e: WindowEvent?) = resetTransparent()
+
+        private fun resetTransparent() {
+            if (!isUndecorated && this@WindowsWindowManager.backdropType is WindowBackdrop.Transparent) updateBackdrop()
+        }
+    }
+
+    init {
+        window.addWindowFocusListener(windowAdapter)
     }
 }

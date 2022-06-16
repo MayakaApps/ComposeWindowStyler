@@ -5,3 +5,5 @@ internal inline fun <T> Iterable<T>.orOf(selector: (T) -> Int): Int {
     forEach { result = result or selector(it) }
     return result
 }
+
+internal const val INT_SIZE = 4

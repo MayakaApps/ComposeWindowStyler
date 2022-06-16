@@ -5,7 +5,6 @@ import com.mayakapps.compose.windowstyler.WindowBackdrop
 import com.mayakapps.compose.windowstyler.windows.jna.Nt
 import com.mayakapps.compose.windowstyler.windows.jna.enums.AccentState
 import com.mayakapps.compose.windowstyler.windows.jna.enums.DwmSystemBackdrop
-import com.mayakapps.compose.windowstyler.windows.jna.structs.OsVersionInfo
 import com.sun.jna.Native
 import com.sun.jna.Pointer
 import com.sun.jna.platform.win32.WinDef
@@ -17,9 +16,10 @@ internal val Window.hwnd
         else WinDef.HWND(Native.getWindowPointer(this))
 
 internal val windowsBuild by lazy {
-    val osVersionInfo = OsVersionInfo()
-    Nt.RtlGetVersion(osVersionInfo)
-    osVersionInfo.buildNumber
+    val osVersionInfo = Nt.getVersion()
+    val buildNumber = osVersionInfo.buildNumber
+    osVersionInfo.dispose()
+    buildNumber
 }
 
 internal fun WindowBackdrop.toDwmSystemBackdrop(): DwmSystemBackdrop =
