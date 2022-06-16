@@ -2,9 +2,11 @@ package com.mayakapps.compose.windowstyler.windows
 
 import androidx.compose.ui.awt.ComposeWindow
 import com.mayakapps.compose.windowstyler.WindowBackdrop
+import com.mayakapps.compose.windowstyler.WindowCornerPreference
 import com.mayakapps.compose.windowstyler.windows.jna.Nt
 import com.mayakapps.compose.windowstyler.windows.jna.enums.AccentState
 import com.mayakapps.compose.windowstyler.windows.jna.enums.DwmSystemBackdrop
+import com.mayakapps.compose.windowstyler.windows.jna.enums.DwmWindowCornerPreference
 import com.sun.jna.Native
 import com.sun.jna.Pointer
 import com.sun.jna.platform.win32.WinDef
@@ -37,4 +39,12 @@ internal fun WindowBackdrop.toAccentState(): AccentState =
         is WindowBackdrop.Aero -> AccentState.ACCENT_ENABLE_BLURBEHIND
         is WindowBackdrop.Acrylic -> AccentState.ACCENT_ENABLE_ACRYLICBLURBEHIND
         else -> AccentState.ACCENT_DISABLED
+    }
+
+internal fun WindowCornerPreference.toDwmWindowCornerPreference(): DwmWindowCornerPreference =
+    when (this) {
+        WindowCornerPreference.DEFAULT -> DwmWindowCornerPreference.DWMWCP_DEFAULT
+        WindowCornerPreference.NOT_ROUNDED -> DwmWindowCornerPreference.DWMWCP_DONOTROUND
+        WindowCornerPreference.ROUNDED -> DwmWindowCornerPreference.DWMWCP_ROUND
+        WindowCornerPreference.SMALL_ROUNDED -> DwmWindowCornerPreference.DWMWCP_ROUNDSMALL
     }

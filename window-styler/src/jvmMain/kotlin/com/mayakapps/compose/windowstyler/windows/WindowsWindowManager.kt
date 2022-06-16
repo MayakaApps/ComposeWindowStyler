@@ -2,6 +2,7 @@ package com.mayakapps.compose.windowstyler.windows
 
 import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.isSpecified
 import com.mayakapps.compose.windowstyler.*
 import com.mayakapps.compose.windowstyler.windows.jna.Dwm
 import com.mayakapps.compose.windowstyler.windows.jna.enums.AccentFlag
@@ -16,6 +17,7 @@ class WindowsWindowManager(
     window: Window,
     isDarkTheme: Boolean = false,
     backdropType: WindowBackdrop = WindowBackdrop.Default,
+    frameStyle: WindowFrameStyle = WindowFrameStyle(),
 ) : WindowManager {
 
     private val hwnd: HWND = window.hwnd
@@ -43,6 +45,15 @@ class WindowsWindowManager(
             }
         }
 
+    override var frameStyle: WindowFrameStyle = frameStyle
+        set(value) {
+            if (field != value) {
+                val oldValue = field
+                field = value
+                updateFrameStyle(oldValue)
+            }
+        }
+
     init {
         // invokeLater is called to make sure that ComposeLayer was initialized first
         SwingUtilities.invokeLater {
@@ -55,6 +66,7 @@ class WindowsWindowManager(
 
             updateTheme()
             updateBackdrop()
+            updateFrameStyle()
         }
     }
 
@@ -127,6 +139,30 @@ class WindowsWindowManager(
                         color = color,
                     )
                 }
+            }
+        }
+    }
+
+    /*
+     * Frame Style
+     */
+
+    private fun updateFrameStyle(oldStyle: WindowFrameStyle? = null) {
+        if (windowsBuild >= 22000) {
+            if ((oldStyle?.cornerPreference ?: WindowCornerPreference.DEFAULT) != frameStyle.cornerPreference) {
+                Dwm.setWindowCornerPreference(hwnd, frameStyle.cornerPreference.toDwmWindowCornerPreference())
+            }
+
+            if (frameStyle.borderColor.isSpecified && oldStyle?.borderColor != frameStyle.borderColor) {
+                Dwm.setWindowAttribute(hwnd, DwmWindowAttribute.DWMWA_BORDER_COLOR, frameStyle.borderColor.toBgr())
+            }
+
+            if (frameStyle.titleBarColor.isSpecified && oldStyle?.titleBarColor != frameStyle.titleBarColor) {
+                Dwm.setWindowAttribute(hwnd, DwmWindowAttribute.DWMWA_CAPTION_COLOR, frameStyle.titleBarColor.toBgr())
+            }
+
+            if (frameStyle.captionColor.isSpecified && oldStyle?.captionColor != frameStyle.captionColor) {
+                Dwm.setWindowAttribute(hwnd, DwmWindowAttribute.DWMWA_TEXT_COLOR, frameStyle.captionColor.toBgr())
             }
         }
     }
