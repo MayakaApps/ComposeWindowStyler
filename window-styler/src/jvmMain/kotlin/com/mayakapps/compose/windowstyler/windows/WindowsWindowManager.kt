@@ -16,12 +16,12 @@ class WindowsWindowManager(
     window: Window,
     isDarkTheme: Boolean = false,
     backdropType: WindowBackdrop = WindowBackdrop.Default,
-) {
+): WindowManager {
 
     private val hwnd: HWND = window.hwnd
     private val isUndecorated = window.isUndecorated
 
-    var isDarkTheme: Boolean = isDarkTheme
+    override var isDarkTheme: Boolean = isDarkTheme
         set(value) {
             if (field != value) {
                 field = value
@@ -29,7 +29,7 @@ class WindowsWindowManager(
             }
         }
 
-    var backdropType: WindowBackdrop = backdropType
+    override var backdropType: WindowBackdrop = backdropType
         set(value) {
             val finalValue = value.fallbackIfUnsupported()
 
