@@ -1,12 +1,12 @@
-package com.mayakapps.compose.windowstyler
+package com.mayakapps.compose.windowstyler.windows
 
-import com.mayakapps.compose.windowstyler.jna.Dwm
-import com.mayakapps.compose.windowstyler.jna.DwmSetWindowAttribute
-import com.mayakapps.compose.windowstyler.jna.User32
-import com.mayakapps.compose.windowstyler.jna.enums.*
-import com.mayakapps.compose.windowstyler.jna.structs.AccentPolicy
-import com.mayakapps.compose.windowstyler.jna.structs.Margins
-import com.mayakapps.compose.windowstyler.jna.structs.WindowCompositionAttributeData
+import com.mayakapps.compose.windowstyler.windows.jna.Dwm
+import com.mayakapps.compose.windowstyler.windows.jna.DwmSetWindowAttribute
+import com.mayakapps.compose.windowstyler.windows.jna.User32
+import com.mayakapps.compose.windowstyler.windows.jna.enums.*
+import com.mayakapps.compose.windowstyler.windows.jna.structs.AccentPolicy
+import com.mayakapps.compose.windowstyler.windows.jna.structs.Margins
+import com.mayakapps.compose.windowstyler.windows.jna.structs.WindowCompositionAttributeData
 import com.sun.jna.Native
 import com.sun.jna.platform.win32.W32Errors
 import com.sun.jna.platform.win32.WinDef

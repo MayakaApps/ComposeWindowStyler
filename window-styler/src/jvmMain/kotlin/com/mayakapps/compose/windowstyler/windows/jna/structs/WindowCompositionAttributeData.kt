@@ -1,6 +1,6 @@
-package com.mayakapps.compose.windowstyler.jna.structs
+package com.mayakapps.compose.windowstyler.windows.jna.structs
 
-import com.mayakapps.compose.windowstyler.jna.enums.WindowCompositionAttribute
+import com.mayakapps.compose.windowstyler.windows.jna.enums.WindowCompositionAttribute
 import com.sun.jna.Structure.FieldOrder
 
 @Suppress("unused")

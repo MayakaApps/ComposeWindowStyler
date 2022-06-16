@@ -1,4 +1,4 @@
-package com.mayakapps.compose.windowstyler.jna.enums
+package com.mayakapps.compose.windowstyler.windows.jna.enums
 
 @Suppress("SpellCheckingInspection", "unused")
 enum class AccentFlag(val value: Int) {

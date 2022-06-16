@@ -1,8 +1,8 @@
-package com.mayakapps.compose.windowstyler.jna.structs
+package com.mayakapps.compose.windowstyler.windows.jna.structs
 
-import com.mayakapps.compose.windowstyler.jna.enums.AccentFlag
-import com.mayakapps.compose.windowstyler.jna.enums.AccentState
-import com.mayakapps.compose.windowstyler.jna.orOf
+import com.mayakapps.compose.windowstyler.windows.jna.enums.AccentFlag
+import com.mayakapps.compose.windowstyler.windows.jna.enums.AccentState
+import com.mayakapps.compose.windowstyler.windows.jna.orOf
 import com.sun.jna.Structure.FieldOrder
 
 @Suppress("unused")

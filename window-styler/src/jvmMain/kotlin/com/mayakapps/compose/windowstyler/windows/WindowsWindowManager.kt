@@ -1,17 +1,18 @@
-package com.mayakapps.compose.windowstyler
+package com.mayakapps.compose.windowstyler.windows
 
 import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.graphics.Color
-import com.mayakapps.compose.windowstyler.jna.enums.AccentFlag
-import com.mayakapps.compose.windowstyler.jna.enums.AccentState
-import com.mayakapps.compose.windowstyler.jna.enums.DwmSystemBackdrop
+import com.mayakapps.compose.windowstyler.*
+import com.mayakapps.compose.windowstyler.windows.jna.enums.AccentFlag
+import com.mayakapps.compose.windowstyler.windows.jna.enums.AccentState
+import com.mayakapps.compose.windowstyler.windows.jna.enums.DwmSystemBackdrop
 import com.sun.jna.platform.win32.WinDef.HWND
 import java.awt.Window
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
 import javax.swing.SwingUtilities
 
-class WindowManager(
+class WindowsWindowManager(
     window: Window,
     isDarkTheme: Boolean = false,
     backdropType: WindowBackdrop = WindowBackdrop.Default,
@@ -47,7 +48,7 @@ class WindowManager(
         override fun windowLostFocus(e: WindowEvent?) = resetTransparent()
 
         private fun resetTransparent() {
-            if (!isUndecorated && this@WindowManager.backdropType is WindowBackdrop.Transparent) {
+            if (!isUndecorated && this@WindowsWindowManager.backdropType is WindowBackdrop.Transparent) {
                 resetAccentPolicy()
                 updateBackdrop()
             }

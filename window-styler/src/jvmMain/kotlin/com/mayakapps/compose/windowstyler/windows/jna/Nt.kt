@@ -1,6 +1,6 @@
-package com.mayakapps.compose.windowstyler.jna
+package com.mayakapps.compose.windowstyler.windows.jna
 
-import com.mayakapps.compose.windowstyler.jna.structs.OsVersionInfo
+import com.mayakapps.compose.windowstyler.windows.jna.structs.OsVersionInfo
 import com.sun.jna.Native
 import com.sun.jna.win32.StdCallLibrary
 import com.sun.jna.win32.W32APIOptions
