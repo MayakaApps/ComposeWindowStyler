@@ -51,13 +51,18 @@ Don't forget to replace `<version>` with the latest/desired version found on the
 
 ## Usage
 
-You can apply the desired to your window by using `WindowStyle` inside the `FrameWindowScope` of `Window` composable call. It can be placed anywhere inside it.
+You can apply the desired to your window by using `WindowStyle` inside the `WindowScope` of `Window` or similar composable calls. It can be placed anywhere inside them.
 
 Sample Code:
 
 ```kotlin
 Window(onCloseRequest = ::exitApplication) {
-    WindowStyle(isDarkTheme = isSystemInDarkTheme(), backdropType = WindowBackdrop.Mica)
+    WindowStyle(
+        isDarkTheme = isDarkTheme,
+        backdropType = backdropType,
+        frameStyle = WindowFrameStyle(cornerPreference = WindowCornerPreference.NOT_ROUNDED),
+    )
+
     App()
 }
 ```
@@ -86,6 +91,15 @@ In case of unsupported effect the library tries to fall back to the nearest supp
 `Tabbed` -> `Mica` -> `Acrylic` -> `Transparent`
 
 Aero is dropped as it is much more transparent than `Tabbed` or `Mica` and not customizable as `Acrylic`. If `Tabbed` or `Mica` falls back to `Acrylic` or `Transparent`, high alpha is used with white or black color according to `isDarkTheme` to emulate these effects.
+
+### `frameStyle` 
+
+All the following properties are only supported on Windows 11 or greater and has no effect on other OSes.
+
+* `borderColor`: specifies the color of the window border that is running around the window if the window is decorated. This property doesn't support transparency.
+* `titleBarColor`: specifies the color of the window title bar (caption bar) if the window is decorated. This property doesn't support transparency.
+* `captionColor`: specifies the color of the window caption (title) text if the window is decorated. This property doesn't support transparency.
+* `cornerPreference`: specifies the shape of the corners you want. For example, you can use this property to avoid rounded corners in a decorated window or get the corners rounded in an undecorated window.
 
 ## License
 
