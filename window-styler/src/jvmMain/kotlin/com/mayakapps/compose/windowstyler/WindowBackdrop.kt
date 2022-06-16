@@ -4,15 +4,9 @@ import androidx.compose.ui.graphics.Color
 
 sealed interface WindowBackdrop {
 
-    val supportedSince: Int
-
-    object Default : WindowBackdrop {
-        override val supportedSince: Int = 0 // Unknown but old
-    }
+    object Default : WindowBackdrop
 
     open class Solid(override val color: Color) : WindowBackdrop, ColorableWindowBackdrop {
-        override val supportedSince: Int = 0 // Unknown but old
-
         override fun equals(other: Any?): Boolean = equalsImpl(other)
         override fun hashCode(): Int = hashCodeImpl()
     }
@@ -22,32 +16,22 @@ sealed interface WindowBackdrop {
         override val color: Color =
             if (color.alpha != 1F) color else color.copy(alpha = 0.5F)
 
-        override val supportedSince: Int = 0 // Unknown but old
-
         override fun equals(other: Any?): Boolean = equalsImpl(other)
         override fun hashCode(): Int = hashCodeImpl()
 
         companion object : Transparent(Color.Transparent)
     }
 
-    object Aero : WindowBackdrop {
-        override val supportedSince: Int = 0 // Unknown but old
-    }
+    object Aero : WindowBackdrop
 
     open class Acrylic(override val color: Color) : WindowBackdrop, ColorableWindowBackdrop {
-        override val supportedSince: Int = 17063
-
         override fun equals(other: Any?): Boolean = equalsImpl(other)
         override fun hashCode(): Int = hashCodeImpl()
     }
 
-    object Mica : WindowBackdrop {
-        override val supportedSince: Int = 22000
-    }
+    object Mica : WindowBackdrop
 
-    object Tabbed : WindowBackdrop {
-        override val supportedSince: Int = 22523
-    }
+    object Tabbed : WindowBackdrop
 }
 
 internal sealed interface ColorableWindowBackdrop {

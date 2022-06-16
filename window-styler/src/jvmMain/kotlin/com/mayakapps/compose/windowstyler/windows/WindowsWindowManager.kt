@@ -167,6 +167,14 @@ class WindowsWindowManager(
             get() = themedFallbackColor
     }
 
+    private val WindowBackdrop.supportedSince
+        get() = when (this) {
+            is WindowBackdrop.Acrylic -> 17063
+            is WindowBackdrop.Mica -> 22000
+            is WindowBackdrop.Tabbed -> 22523
+            else -> 0
+        }
+
     /*
      * Focus Listener for transparency workaround
      */
