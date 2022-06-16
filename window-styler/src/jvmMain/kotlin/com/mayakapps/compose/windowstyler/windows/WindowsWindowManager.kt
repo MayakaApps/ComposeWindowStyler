@@ -88,6 +88,11 @@ class WindowsWindowManager(
             if (backdropType is WindowBackdrop.Default || backdropType is ThemedAcrylic ||
                 backdropType is WindowBackdrop.Transparent
             ) updateBackdrop()
+            // This is necessary for window buttons to change color correctly
+            else if (backdropType is WindowBackdrop.Mica && !isUndecorated) {
+                backdropApis.resetWindowFrame()
+                backdropApis.createSheetOfGlassEffect()
+            }
         }
     }
 
