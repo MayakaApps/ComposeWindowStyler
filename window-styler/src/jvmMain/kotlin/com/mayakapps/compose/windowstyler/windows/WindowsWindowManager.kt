@@ -3,9 +3,12 @@ package com.mayakapps.compose.windowstyler.windows
 import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.graphics.Color
 import com.mayakapps.compose.windowstyler.*
+import com.mayakapps.compose.windowstyler.windows.jna.Dwm
+import com.mayakapps.compose.windowstyler.windows.jna.User32
 import com.mayakapps.compose.windowstyler.windows.jna.enums.AccentFlag
 import com.mayakapps.compose.windowstyler.windows.jna.enums.AccentState
 import com.mayakapps.compose.windowstyler.windows.jna.enums.DwmSystemBackdrop
+import com.mayakapps.compose.windowstyler.windows.jna.enums.DwmWindowAttribute
 import com.sun.jna.platform.win32.WinDef.HWND
 import java.awt.Window
 import java.awt.event.WindowAdapter
@@ -76,7 +79,14 @@ class WindowsWindowManager(
     private var isSheetOfGlassApplied = false
 
     private fun updateTheme() {
-        if (windowsBuild >= 17763 && Native.setImmersiveDarkModeEnabled(hwnd, isDarkTheme)) {
+        val attribute =
+            when {
+                windowsBuild < 17763 -> return
+                windowsBuild >= 18985 -> DwmWindowAttribute.DWMWA_USE_IMMERSIVE_DARK_MODE
+                else -> DwmWindowAttribute.DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1
+            }
+
+        if (windowsBuild >= 17763 && Dwm.setWindowAttribute(hwnd, attribute, isDarkTheme)) {
             // Default: This is done to update the background color between white or black
             // ThemedAcrylic: Update the acrylic effect if it is themed
             // Transparent:
@@ -144,7 +154,7 @@ class WindowsWindowManager(
 
     private fun setSystemBackdrop(systemBackdrop: DwmSystemBackdrop) {
         createSheetOfGlassEffect()
-        if (Native.setSystemBackdrop(hwnd, systemBackdrop)) {
+        if (Dwm.setSystemBackdrop(hwnd, systemBackdrop)) {
             isSystemBackdropSet = systemBackdrop == DwmSystemBackdrop.DWMSBT_DISABLE
             if (isSystemBackdropSet) resetAccentPolicy()
         }
@@ -152,7 +162,7 @@ class WindowsWindowManager(
 
     private fun setMicaEffectEnabled(enabled: Boolean) {
         createSheetOfGlassEffect()
-        if (Native.setMicaEffectEnabled(hwnd, enabled)) {
+        if (Dwm.setWindowAttribute(hwnd, DwmWindowAttribute.DWMWA_MICA_EFFECT, enabled)) {
             isMicaEnabled = enabled
             if (isMicaEnabled) resetAccentPolicy()
         }
@@ -164,7 +174,7 @@ class WindowsWindowManager(
         color: Int = 0,
         animationId: Int = 0,
     ) {
-        if (Native.setAccentPolicy(hwnd, accentState, accentFlags, color, animationId)) {
+        if (User32.setAccentPolicy(hwnd, accentState, accentFlags, color, animationId)) {
             isAccentPolicySet = accentState != AccentState.ACCENT_DISABLED
             if (isAccentPolicySet) {
                 resetSystemBackdrop()
@@ -175,7 +185,7 @@ class WindowsWindowManager(
     }
 
     private fun createSheetOfGlassEffect() {
-        if (!isSheetOfGlassApplied && Native.createSheetOfGlassEffect(hwnd)) isSheetOfGlassApplied = true
+        if (!isSheetOfGlassApplied && Dwm.extendFrameIntoClientArea(hwnd, -1)) isSheetOfGlassApplied = true
     }
 
 
@@ -192,7 +202,14 @@ class WindowsWindowManager(
     }
 
     private fun resetWindowFrame() {
-        if (isSheetOfGlassApplied && Native.restoreWindowFrame(hwnd)) isSheetOfGlassApplied = false
+        // At least one margin should be non-negative in order to show the DWM
+        // window shadow created by handling [WM_NCCALCSIZE].
+        //
+        // Matching value with bitsdojo_window.
+        // https://github.com/bitsdojo/bitsdojo_window/blob/adad0cd40be3d3e12df11d864f18a96a2d0fb4fb/bitsdojo_window_windows/windows/bitsdojo_window.cpp#L149
+        if (isSheetOfGlassApplied && Dwm.extendFrameIntoClientArea(hwnd, 0, 0, 1, 0)) {
+            isSheetOfGlassApplied = false
+        }
     }
 
 
