@@ -1,6 +1,8 @@
 package com.mayakapps.compose.windowstyler
 
 import com.mayakapps.compose.windowstyler.windows.WindowsWindowManager
+import org.jetbrains.skiko.OS
+import org.jetbrains.skiko.hostOs
 import java.awt.Window
 
 fun WindowManager(
@@ -8,8 +10,8 @@ fun WindowManager(
     isDarkTheme: Boolean = false,
     backdropType: WindowBackdrop = WindowBackdrop.Default,
     frameStyle: WindowFrameStyle = WindowFrameStyle(),
-) = when (OsType.current) {
-    OsType.WINDOWS -> WindowsWindowManager(window, isDarkTheme, backdropType, frameStyle)
+) = when (hostOs) {
+    OS.Windows -> WindowsWindowManager(window, isDarkTheme, backdropType, frameStyle)
     else -> StubWindowManager(isDarkTheme, backdropType, frameStyle)
 }
 
