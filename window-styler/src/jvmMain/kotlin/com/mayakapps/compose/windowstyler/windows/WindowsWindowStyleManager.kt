@@ -13,12 +13,12 @@ import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
 import javax.swing.SwingUtilities
 
-class WindowsWindowManager(
+class WindowsWindowStyleManager(
     window: Window,
     isDarkTheme: Boolean = false,
     backdropType: WindowBackdrop = WindowBackdrop.Default,
     frameStyle: WindowFrameStyle = WindowFrameStyle(),
-) : WindowManager {
+) : WindowStyleManager {
 
     private val hwnd: HWND = window.hwnd
     private val isUndecorated = window.isUndecorated
@@ -228,7 +228,7 @@ class WindowsWindowManager(
         override fun windowLostFocus(e: WindowEvent?) = resetTransparent()
 
         private fun resetTransparent() {
-            if (!isUndecorated && this@WindowsWindowManager.backdropType is WindowBackdrop.Transparent) updateBackdrop()
+            if (!isUndecorated && this@WindowsWindowStyleManager.backdropType is WindowBackdrop.Transparent) updateBackdrop()
         }
     }
 

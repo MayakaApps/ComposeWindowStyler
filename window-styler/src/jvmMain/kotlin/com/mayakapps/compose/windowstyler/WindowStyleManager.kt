@@ -1,28 +1,28 @@
 package com.mayakapps.compose.windowstyler
 
-import com.mayakapps.compose.windowstyler.windows.WindowsWindowManager
+import com.mayakapps.compose.windowstyler.windows.WindowsWindowStyleManager
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
 import java.awt.Window
 
-fun WindowManager(
+fun WindowStyleManager(
     window: Window,
     isDarkTheme: Boolean = false,
     backdropType: WindowBackdrop = WindowBackdrop.Default,
     frameStyle: WindowFrameStyle = WindowFrameStyle(),
 ) = when (hostOs) {
-    OS.Windows -> WindowsWindowManager(window, isDarkTheme, backdropType, frameStyle)
-    else -> StubWindowManager(isDarkTheme, backdropType, frameStyle)
+    OS.Windows -> WindowsWindowStyleManager(window, isDarkTheme, backdropType, frameStyle)
+    else -> StubWindowStyleManager(isDarkTheme, backdropType, frameStyle)
 }
 
-interface WindowManager {
+interface WindowStyleManager {
     var isDarkTheme: Boolean
     var backdropType: WindowBackdrop
     var frameStyle: WindowFrameStyle
 }
 
-internal class StubWindowManager(
+internal class StubWindowStyleManager(
     override var isDarkTheme: Boolean,
     override var backdropType: WindowBackdrop,
     override var frameStyle: WindowFrameStyle,
-) : WindowManager
+) : WindowStyleManager
