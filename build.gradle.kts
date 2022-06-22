@@ -3,6 +3,9 @@ plugins {
     // in each subproject's classloader
     kotlin("multiplatform") apply false
     id("org.jetbrains.compose") apply false
+
+    id("org.jetbrains.dokka") apply false
+    id("com.vanniktech.maven.publish") apply false
 }
 
 subprojects {
