@@ -8,10 +8,11 @@ pluginManagement {
     }
 
     plugins {
-        kotlin("multiplatform").version(extra["kotlin.version"] as String)
-        id("org.jetbrains.compose").version(extra["compose.version"] as String)
+        kotlin("multiplatform") version (extra["kotlin.version"] as String)
+        id("org.jetbrains.compose") version (extra["compose.version"] as String)
 
-        id("com.vanniktech.maven.publish").version("0.20.0")
+        id("org.jetbrains.dokka") version "1.7.0"
+        id("com.vanniktech.maven.publish") version "0.20.0"
     }
 }
 

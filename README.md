@@ -1,7 +1,7 @@
 <br />
 
 <div align="center">
-    <img src="docs/logo.png" alt="Logo"/>
+    <img src="res/logo.png" alt="Logo"/>
 </div>
 
 <h1 align="center" style="margin-top: 0;">Compose Window Styler</h1>
@@ -22,7 +22,7 @@ UI. This includes styling the window to use acrylic, mica ...etc.**
 
 ---
 
-![Demo Screenshot](docs/demo_preview.webp)
+![Demo Screenshot](res/demo_preview.webp)
 
 ---
 
@@ -79,6 +79,12 @@ Window(onCloseRequest = ::exitApplication) {
 }
 ```
 
+
+
+## Documentation
+
+See documentation [here](https://mayakaapps.github.io/ComposeWindowStyler/index.html)
+
 ## Available Styles
 
 ### `isDarkTheme`
@@ -105,8 +111,8 @@ follows:
   and Windows 7 version of blur. This effect doesn't allow any customization.
 * `WindowBackdrop.Acrylic(val color: Color)`: This
   applies [Acrylic](https://docs.microsoft.com/en-us/windows/apps/design/style/acrylic) backdrop blended with the
-  supplied color. If the backdrop is rendered opaque double check that `color` has resonable alpha value. Supported on
-  Windows 10 version 1803 or greater.
+  supplied color. If the backdrop is rendered opaque, double check that `color` has a reasonable alpha value. Supported 
+  on Windows 10 version 1803 or greater.
 * `WindowBackdrop.Mica`: This applies [Mica](https://docs.microsoft.com/en-us/windows/apps/design/style/mica) backdrop
   themed according to `isDarkTheme` value. Supported on Windows 11 21H2 or greater.
 * `WindowBackdrop.Tabbed`: This applies Tabbed backdrop themed according to `isDarkTheme` value. This is a backdrop that

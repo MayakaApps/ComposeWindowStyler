@@ -13,6 +13,11 @@ import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
 import javax.swing.SwingUtilities
 
+/**
+ * Windows implementation of [WindowStyleManager]. It is not recommended to use this class directly.
+ *
+ * If used on an OS other than Windows, it'll crash.
+ */
 class WindowsWindowStyleManager(
     window: Window,
     isDarkTheme: Boolean = false,
@@ -198,12 +203,12 @@ class WindowsWindowStyleManager(
     private val themedFallbackColor
         get() = if (isDarkTheme) Color(0xEF000000L) else Color(0xEFFFFFFFL)
 
-    inner class ThemedAcrylic : WindowBackdrop.Acrylic(Color.Unspecified) {
+    private inner class ThemedAcrylic : WindowBackdrop.Acrylic(Color.Unspecified) {
         override val color: Color
             get() = themedFallbackColor
     }
 
-    inner class ThemedTransparent : WindowBackdrop.Transparent(Color.Unspecified) {
+    private inner class ThemedTransparent : WindowBackdrop.Transparent(Color.Unspecified) {
         override val color: Color
             get() = themedFallbackColor
     }

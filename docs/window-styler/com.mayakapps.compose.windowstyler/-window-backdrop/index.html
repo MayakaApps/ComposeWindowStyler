@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>WindowBackdrop</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+const savedDarkMode = storage ? JSON.parse(storage) : false
+if(savedDarkMode === true){
+    document.getElementsByTagName("html")[0].classList.add("theme-dark")
+}</script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+</head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+            <a href="../../../index.html">
+                    <span>window-styler</span>
+            </a>
+    </div>
+    <div>
+0.3.2    </div>
+    <div class="pull-right d-flex">
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
+        <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" id="content" pageIds="window-styler::com.mayakapps.compose.windowstyler/WindowBackdrop///PointingToDeclaration//2041725048">
+  <div class="breadcrumbs"><a href="../../../index.html">window-styler</a><span class="delimiter">/</span><a href="../index.html">com.mayakapps.compose.windowstyler</a><span class="delimiter">/</span><a href="index.html">WindowBackdrop</a></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Window</span><wbr></wbr><span><span>Backdrop</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":window-styler:dokkaHtml/jvmMain"><div class="symbol monospace"><span class="token keyword">interface </span><a href="index.html">WindowBackdrop</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">The type of the window backdrop/background.</p><p class="paragraph"><strong>Fallback Strategy</strong></p><p class="paragraph">In case of unsupported effect the library tries to fall back to the nearest supported effect as follows:</p><p class="paragraph"><a href="-tabbed/index.html">Tabbed</a> -><a href="-mica/index.html">Mica</a> -><a href="-acrylic/index.html">Acrylic</a> -><a href="-transparent/index.html">Transparent</a></p><p class="paragraph"><a href="-aero/index.html">Aero</a> is dropped from the fallback as it is much more transparent than <a href="-tabbed/index.html">Tabbed</a> or <a href="-mica/index.html">Mica</a> and not customizable as <a href="-acrylic/index.html">Acrylic</a>. If <a href="-tabbed/index.html">Tabbed</a> or <a href="-mica/index.html">Mica</a> falls back to <a href="-acrylic/index.html">Acrylic</a> or <a href="-transparent/index.html">Transparent</a>, high alpha is used with white or black color according to <code class="lang-kotlin">isDarkTheme</code> to emulate these effects.</p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Types">Types</button><button class="section-tab" data-togglable="Inheritors">Inheritors</button></div>
+    <div class="tabs-section-body">
+      <h2 class="">Types</h2>
+      <div class="table" data-togglable="Types"><a data-name="746320276%2FClasslikes%2F2041725048" anchor-label="Acrylic" id="746320276%2FClasslikes%2F2041725048" data-filterable-set=":window-styler:dokkaHtml/jvmMain"></a>
+        <div class="table-row" data-filterable-current=":window-styler:dokkaHtml/jvmMain" data-filterable-set=":window-styler:dokkaHtml/jvmMain">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-acrylic/index.html"><span><span>Acrylic</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="746320276%2FClasslikes%2F2041725048"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":window-styler:dokkaHtml/jvmMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-acrylic/index.html">Acrylic</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>color<span class="token operator">: </span><span data-unresolved-link="androidx.compose.ui.graphics/Color///PointingToDeclaration/">Color</span></span></span><span class="token punctuation">)</span> : <a href="index.html">WindowBackdrop</a>, <span data-unresolved-link="com.mayakapps.compose.windowstyler/ColorableWindowBackdrop///PointingToDeclaration/">ColorableWindowBackdrop</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">This applies <a href="https://docs.microsoft.com/en-us/windows/apps/design/style/acrylic">Acrylic</a> backdrop blended with the supplied <a href="-acrylic/color.html">color</a>. If the backdrop is rendered opaque, double check that <a href="-acrylic/color.html">color</a> has reasonable alpha value.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1553947856%2FClasslikes%2F2041725048" anchor-label="Aero" id="-1553947856%2FClasslikes%2F2041725048" data-filterable-set=":window-styler:dokkaHtml/jvmMain"></a>
+        <div class="table-row" data-filterable-current=":window-styler:dokkaHtml/jvmMain" data-filterable-set=":window-styler:dokkaHtml/jvmMain">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-aero/index.html"><span><span>Aero</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1553947856%2FClasslikes%2F2041725048"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":window-styler:dokkaHtml/jvmMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-aero/index.html">Aero</a> : <a href="index.html">WindowBackdrop</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">This applies <a href="https://en.wikipedia.org/wiki/Windows_Aero">Aero</a> backdrop which is Windows Vista and Windows 7 version of blur.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1241760720%2FClasslikes%2F2041725048" anchor-label="Default" id="1241760720%2FClasslikes%2F2041725048" data-filterable-set=":window-styler:dokkaHtml/jvmMain"></a>
+        <div class="table-row" data-filterable-current=":window-styler:dokkaHtml/jvmMain" data-filterable-set=":window-styler:dokkaHtml/jvmMain">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-default/index.html"><span><span>Default</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1241760720%2FClasslikes%2F2041725048"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":window-styler:dokkaHtml/jvmMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-default/index.html">Default</a> : <a href="index.html">WindowBackdrop</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">This effect provides a simple solid backdrop colored as white or black according to isDarkTheme. This allows the backdrop to blend with the title bar as well. Though its name may imply that the window will be left unchanged, this is not the case as once the transparency is hacked into the window, it can't be reverted.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-524226633%2FClasslikes%2F2041725048" anchor-label="Mica" id="-524226633%2FClasslikes%2F2041725048" data-filterable-set=":window-styler:dokkaHtml/jvmMain"></a>
+        <div class="table-row" data-filterable-current=":window-styler:dokkaHtml/jvmMain" data-filterable-set=":window-styler:dokkaHtml/jvmMain">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-mica/index.html"><span><span>Mica</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-524226633%2FClasslikes%2F2041725048"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":window-styler:dokkaHtml/jvmMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-mica/index.html">Mica</a> : <a href="index.html">WindowBackdrop</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">This applies <a href="https://docs.microsoft.com/en-us/windows/apps/design/style/mica">Mica</a> backdrop themed according to <code class="lang-kotlin">isDarkTheme</code> value.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1419284134%2FClasslikes%2F2041725048" anchor-label="Solid" id="1419284134%2FClasslikes%2F2041725048" data-filterable-set=":window-styler:dokkaHtml/jvmMain"></a>
+        <div class="table-row" data-filterable-current=":window-styler:dokkaHtml/jvmMain" data-filterable-set=":window-styler:dokkaHtml/jvmMain">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-solid/index.html"><span><span>Solid</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1419284134%2FClasslikes%2F2041725048"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":window-styler:dokkaHtml/jvmMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-solid/index.html">Solid</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>color<span class="token operator">: </span><span data-unresolved-link="androidx.compose.ui.graphics/Color///PointingToDeclaration/">Color</span></span></span><span class="token punctuation">)</span> : <a href="index.html">WindowBackdrop</a>, <span data-unresolved-link="com.mayakapps.compose.windowstyler/ColorableWindowBackdrop///PointingToDeclaration/">ColorableWindowBackdrop</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">This applies <a href="-solid/color.html">color</a> as a solid background which means that any alpha component is ignored and the color is rendered as opaque.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="802814501%2FClasslikes%2F2041725048" anchor-label="Tabbed" id="802814501%2FClasslikes%2F2041725048" data-filterable-set=":window-styler:dokkaHtml/jvmMain"></a>
+        <div class="table-row" data-filterable-current=":window-styler:dokkaHtml/jvmMain" data-filterable-set=":window-styler:dokkaHtml/jvmMain">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-tabbed/index.html"><span><span>Tabbed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="802814501%2FClasslikes%2F2041725048"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":window-styler:dokkaHtml/jvmMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-tabbed/index.html">Tabbed</a> : <a href="index.html">WindowBackdrop</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">This applies Tabbed backdrop themed according to <code class="lang-kotlin">isDarkTheme</code> value. This is a backdrop that is similar to <a href="-mica/index.html">Mica</a> but targeted at tabbed windows.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1667056095%2FClasslikes%2F2041725048" anchor-label="Transparent" id="1667056095%2FClasslikes%2F2041725048" data-filterable-set=":window-styler:dokkaHtml/jvmMain"></a>
+        <div class="table-row" data-filterable-current=":window-styler:dokkaHtml/jvmMain" data-filterable-set=":window-styler:dokkaHtml/jvmMain">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-transparent/index.html"><span><span>Transparent</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1667056095%2FClasslikes%2F2041725048"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":window-styler:dokkaHtml/jvmMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-transparent/index.html">Transparent</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">color<span class="token operator">: </span><span data-unresolved-link="androidx.compose.ui.graphics/Color///PointingToDeclaration/">Color</span></span></span><span class="token punctuation">)</span> : <a href="index.html">WindowBackdrop</a>, <span data-unresolved-link="com.mayakapps.compose.windowstyler/ColorableWindowBackdrop///PointingToDeclaration/">ColorableWindowBackdrop</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Same as <a href="-solid/index.html">Solid</a> but allows transparency taking into account the alpha value. If the passed <a href="-transparent/color.html">color</a> is fully opaque, the alpha is set to 0.5F.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Inheritors</h2>
+      <div class="table" data-togglable="Inheritors"><a data-name="1241760720%2FInheritors%2F2041725048" anchor-label="Default" id="1241760720%2FInheritors%2F2041725048" data-filterable-set=":window-styler:dokkaHtml/jvmMain"></a>
+        <div class="table-row" data-filterable-current=":window-styler:dokkaHtml/jvmMain" data-filterable-set=":window-styler:dokkaHtml/jvmMain">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-default/index.html">Default</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1241760720%2FInheritors%2F2041725048"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div></div>
+          </div>
+        </div>
+<a data-name="1419284134%2FInheritors%2F2041725048" anchor-label="Solid" id="1419284134%2FInheritors%2F2041725048" data-filterable-set=":window-styler:dokkaHtml/jvmMain"></a>
+        <div class="table-row" data-filterable-current=":window-styler:dokkaHtml/jvmMain" data-filterable-set=":window-styler:dokkaHtml/jvmMain">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-solid/index.html">Solid</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1419284134%2FInheritors%2F2041725048"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div></div>
+          </div>
+        </div>
+<a data-name="1667056095%2FInheritors%2F2041725048" anchor-label="Transparent" id="1667056095%2FInheritors%2F2041725048" data-filterable-set=":window-styler:dokkaHtml/jvmMain"></a>
+        <div class="table-row" data-filterable-current=":window-styler:dokkaHtml/jvmMain" data-filterable-set=":window-styler:dokkaHtml/jvmMain">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-transparent/index.html">Transparent</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1667056095%2FInheritors%2F2041725048"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div></div>
+          </div>
+        </div>
+<a data-name="-1553947856%2FInheritors%2F2041725048" anchor-label="Aero" id="-1553947856%2FInheritors%2F2041725048" data-filterable-set=":window-styler:dokkaHtml/jvmMain"></a>
+        <div class="table-row" data-filterable-current=":window-styler:dokkaHtml/jvmMain" data-filterable-set=":window-styler:dokkaHtml/jvmMain">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-aero/index.html">Aero</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1553947856%2FInheritors%2F2041725048"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div></div>
+          </div>
+        </div>
+<a data-name="746320276%2FInheritors%2F2041725048" anchor-label="Acrylic" id="746320276%2FInheritors%2F2041725048" data-filterable-set=":window-styler:dokkaHtml/jvmMain"></a>
+        <div class="table-row" data-filterable-current=":window-styler:dokkaHtml/jvmMain" data-filterable-set=":window-styler:dokkaHtml/jvmMain">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-acrylic/index.html">Acrylic</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="746320276%2FInheritors%2F2041725048"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div></div>
+          </div>
+        </div>
+<a data-name="-524226633%2FInheritors%2F2041725048" anchor-label="Mica" id="-524226633%2FInheritors%2F2041725048" data-filterable-set=":window-styler:dokkaHtml/jvmMain"></a>
+        <div class="table-row" data-filterable-current=":window-styler:dokkaHtml/jvmMain" data-filterable-set=":window-styler:dokkaHtml/jvmMain">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-mica/index.html">Mica</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-524226633%2FInheritors%2F2041725048"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div></div>
+          </div>
+        </div>
+<a data-name="802814501%2FInheritors%2F2041725048" anchor-label="Tabbed" id="802814501%2FInheritors%2F2041725048" data-filterable-set=":window-styler:dokkaHtml/jvmMain"></a>
+        <div class="table-row" data-filterable-current=":window-styler:dokkaHtml/jvmMain" data-filterable-set=":window-styler:dokkaHtml/jvmMain">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-tabbed/index.html">Tabbed</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="802814501%2FInheritors%2F2041725048"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2022 Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+    </div>
+</div>
+</body>
+</html>
