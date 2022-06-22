@@ -5,6 +5,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.window.WindowScope
 
+/**
+ * Applies the provided styles to the current window.
+ *
+ * See [WindowStyleManager.isDarkTheme], [WindowBackdrop], [WindowFrameStyle].
+ */
 @Composable
 fun WindowScope.WindowStyle(
     isDarkTheme: Boolean = false,
