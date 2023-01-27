@@ -6,14 +6,6 @@ pluginManagement {
         mavenCentral()
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
-
-    plugins {
-        kotlin("multiplatform") version (extra["kotlin.version"] as String)
-        id("org.jetbrains.compose") version (extra["compose.version"] as String)
-
-        id("org.jetbrains.dokka") version "1.7.0"
-        id("com.vanniktech.maven.publish") version "0.20.0"
-    }
 }
 
 rootProject.name = "ComposeWindowStyler"
