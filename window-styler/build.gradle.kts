@@ -1,14 +1,14 @@
-import org.jetbrains.compose.compose
-
+// Suppress annotation is a workaround for a bug.
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    kotlin("multiplatform")
-    id("org.jetbrains.compose")
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.compose)
 
-    id("org.jetbrains.dokka")
-    id("com.vanniktech.maven.publish")
+    alias(libs.plugins.dokka)
+    alias(libs.plugins.vanniktech.publish)
 }
 
-group = "com.mayakapps.compose"
+group = extra["GROUP"] as String
 version = extra["VERSION_NAME"] as String
 
 kotlin {
@@ -26,8 +26,8 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.ui)
 
-                implementation("net.java.dev.jna:jna:5.11.0")
-                implementation("net.java.dev.jna:jna-platform:5.11.0")
+                implementation(libs.jna)
+                implementation(libs.jna.platform)
             }
         }
     }
