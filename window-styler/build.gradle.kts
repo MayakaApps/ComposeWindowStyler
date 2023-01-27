@@ -8,7 +8,7 @@ plugins {
     alias(libs.plugins.vanniktech.publish)
 }
 
-group = "com.mayakapps.compose"
+group = extra["GROUP"] as String
 version = extra["VERSION_NAME"] as String
 
 kotlin {
