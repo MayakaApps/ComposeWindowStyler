@@ -2,10 +2,10 @@
 kotlin = "1.7.20"
 compose = "1.2.2"
 
-jna = "5.11.0"
+jna = "5.13.0"
 
-dokka = "1.7.0"
-vanniktech-publish = "0.20.0"
+dokka = "1.7.20"
+vanniktech-publish = "0.23.2"
 
 
 [plugins]
