@@ -1,5 +1,3 @@
-import org.jetbrains.compose.compose
-
 // Suppress annotation is a workaround for a bug.
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
