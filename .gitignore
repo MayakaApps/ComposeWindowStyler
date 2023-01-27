@@ -1,15 +1,21 @@
+# IDEA/Android Studio
+.idea/*
+!.idea/codeStyles
 *.iml
-.gradle
-/local.properties
-/.idea
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-build/
+
+# Android Studio - Layout Inspector
 /captures
-.externalNativeBuild
-.cxx
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Gradle files
+.gradle/
+build/
+
+# NDK
+.externalNativeBuild/
+.cxx/
+
+# Mac files
+.DS_Store
