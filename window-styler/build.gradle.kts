@@ -12,11 +12,8 @@ group = extra["GROUP"] as String
 version = extra["VERSION_NAME"] as String
 
 kotlin {
+    jvmToolchain(17)
     jvm {
-        compilations.all {
-            kotlinOptions.jvmTarget = "11"
-        }
-
         withJava()
     }
 

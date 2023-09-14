@@ -1,6 +1,6 @@
 [versions]
-kotlin = "1.7.20"
-compose = "1.2.2"
+kotlin = "1.9.10"
+compose = "1.5.1"
 
 jna = "5.13.0"
 
