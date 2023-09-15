@@ -13,12 +13,13 @@ import java.awt.Window
  */
 fun WindowStyleManager(
     window: Window,
-    isDarkTheme: Boolean = false,
-    backdropType: WindowBackdrop = WindowBackdrop.Default,
-    frameStyle: WindowFrameStyle = WindowFrameStyle(),
+    isDarkTheme: Boolean,
+    backdropType: WindowBackdrop,
+    frameStyle: WindowFrameStyle,
+    manageTitlebar: Boolean,
 ) = when (hostOs) {
-    OS.Windows -> WindowsWindowStyleManager(window, isDarkTheme, backdropType, frameStyle)
-    else -> StubWindowStyleManager(isDarkTheme, backdropType, frameStyle)
+    OS.Windows -> WindowsWindowStyleManager(window, isDarkTheme, backdropType, frameStyle, manageTitlebar)
+    else -> StubWindowStyleManager(isDarkTheme, backdropType, frameStyle, manageTitlebar)
 }
 
 /**
@@ -46,10 +47,17 @@ interface WindowStyleManager {
      * The style of the window frame which includes the title bar and window border. See [WindowFrameStyle].
      */
     var frameStyle: WindowFrameStyle
+
+    /**
+     * Whether to manage the title bar of the window. If set to `true`, the title bar will be hidden and the window
+     * will need to manage its own title.
+     */
+    var manageTitlebar: Boolean
 }
 
 internal class StubWindowStyleManager(
     override var isDarkTheme: Boolean,
     override var backdropType: WindowBackdrop,
     override var frameStyle: WindowFrameStyle,
+    override var manageTitlebar: Boolean,
 ) : WindowStyleManager

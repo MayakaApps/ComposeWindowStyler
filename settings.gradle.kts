@@ -8,4 +8,8 @@ pluginManagement {
 }
 
 rootProject.name = "ComposeWindowStyler"
-include("window-styler", "window-styler-demo")
+include(
+    "window-styler",
+    "window-styler-demo",
+    "window-styler-demo-transparent",
+)

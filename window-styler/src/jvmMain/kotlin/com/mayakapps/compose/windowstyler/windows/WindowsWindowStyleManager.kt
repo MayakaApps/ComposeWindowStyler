@@ -3,7 +3,15 @@ package com.mayakapps.compose.windowstyler.windows
 import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.isSpecified
-import com.mayakapps.compose.windowstyler.*
+import com.mayakapps.compose.windowstyler.ColorableWindowBackdrop
+import com.mayakapps.compose.windowstyler.WindowBackdrop
+import com.mayakapps.compose.windowstyler.WindowCornerPreference
+import com.mayakapps.compose.windowstyler.WindowFrameStyle
+import com.mayakapps.compose.windowstyler.WindowStyleManager
+import com.mayakapps.compose.windowstyler.hackContentPane
+import com.mayakapps.compose.windowstyler.isTransparent
+import com.mayakapps.compose.windowstyler.isUndecorated
+import com.mayakapps.compose.windowstyler.setComposeLayerTransparency
 import com.mayakapps.compose.windowstyler.windows.jna.Dwm
 import com.mayakapps.compose.windowstyler.windows.jna.enums.AccentFlag
 import com.mayakapps.compose.windowstyler.windows.jna.enums.DwmWindowAttribute
@@ -20,16 +28,18 @@ import javax.swing.SwingUtilities
  */
 class WindowsWindowStyleManager(
     window: Window,
-    isDarkTheme: Boolean = false,
-    backdropType: WindowBackdrop = WindowBackdrop.Default,
-    frameStyle: WindowFrameStyle = WindowFrameStyle(),
+    isDarkTheme: Boolean,
+    backdropType: WindowBackdrop,
+    frameStyle: WindowFrameStyle,
+    manageTitlebar: Boolean,
 ) : WindowStyleManager {
 
     private val hwnd: HWND = window.hwnd
     private val isUndecorated = window.isUndecorated
     private var wasAero = false
 
-    private val backdropApis = WindowsBackdropApis(hwnd)
+    private val backdropApis = WindowsBackdropApis.install(hwnd)
+    private val customDecorationWindowProc = if (manageTitlebar) CustomDecorationWindowProc.install(hwnd) else null
 
     override var isDarkTheme: Boolean = isDarkTheme
         set(value) {
@@ -56,6 +66,17 @@ class WindowsWindowStyleManager(
                 val oldValue = field
                 field = value
                 updateFrameStyle(oldValue)
+            }
+        }
+
+    override var manageTitlebar: Boolean = manageTitlebar
+        get() = field
+        set(value) {
+            field = if (value) {
+                true
+            } else {
+                // TODO: reset the window proc to the default one
+                false
             }
         }
 
@@ -193,6 +214,7 @@ class WindowsWindowStyleManager(
                 if (this is ThemedAcrylic) themedTransparent
                 else WindowBackdrop.Transparent(color)
             }
+
             else -> WindowBackdrop.Default
         }.fallbackIfUnsupported()
     }

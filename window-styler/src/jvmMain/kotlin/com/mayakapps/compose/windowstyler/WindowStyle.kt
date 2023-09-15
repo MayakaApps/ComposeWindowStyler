@@ -15,8 +15,9 @@ fun WindowScope.WindowStyle(
     isDarkTheme: Boolean = false,
     backdropType: WindowBackdrop = WindowBackdrop.Default,
     frameStyle: WindowFrameStyle = WindowFrameStyle(),
+    manageTitlebar: Boolean = false,
 ) {
-    val manager = remember { WindowStyleManager(window, isDarkTheme, backdropType, frameStyle) }
+    val manager = remember { WindowStyleManager(window, isDarkTheme, backdropType, frameStyle, manageTitlebar) }
 
     LaunchedEffect(isDarkTheme) {
         manager.isDarkTheme = isDarkTheme
