@@ -2,13 +2,18 @@ package com.mayakapps.compose.windowstyler
 
 import androidx.compose.ui.awt.ComposeWindow
 import org.jetbrains.skiko.SkiaLayer
-import java.awt.*
+import java.awt.BorderLayout
+import java.awt.Color
+import java.awt.Component
+import java.awt.Container
+import java.awt.Frame
+import java.awt.Window
 import javax.swing.JComponent
 import javax.swing.JDialog
 import javax.swing.JWindow
 
 internal fun ComposeWindow.setComposeLayerTransparency(isTransparent: Boolean) {
-    skiaLayer.transparency = isTransparent
+    findSkiaLayer()?.transparency = isTransparent
 }
 
 internal fun Window.hackContentPane() {
@@ -30,17 +35,24 @@ internal fun Window.hackContentPane() {
     contentPane = newContentPane
 }
 
+private fun <T : JComponent> findComponent(
+    container: Container,
+    klass: Class<T>,
+): T? {
+    val componentSequence = container.components.asSequence()
+    return componentSequence.filter { klass.isInstance(it) }.ifEmpty {
+        componentSequence.filterIsInstance<Container>()
+            .mapNotNull { findComponent(it, klass) }
+    }.map { klass.cast(it) }.firstOrNull()
+}
 
-internal val ComposeWindow.skiaLayer: SkiaLayer
-    get() {
-        val delegate = delegateField.get(this)
-        val layer = getLayerMethod.invoke(delegate)
-        return getComponentMethod.invoke(layer) as SkiaLayer
-    }
+private inline fun <reified T : JComponent> Container.findComponent() = findComponent(this, T::class.java)
+
+fun ComposeWindow.findSkiaLayer(): SkiaLayer? = findComponent<SkiaLayer>()
 
 internal val Window.isTransparent
     get() = when (this) {
-        is ComposeWindow -> skiaLayer.transparency
+        is ComposeWindow -> findSkiaLayer()?.transparency ?: false
         else -> background.alpha != 255
     }
 
@@ -51,16 +63,3 @@ internal val Window.isUndecorated
         is JWindow -> true
         else -> false
     }
-
-
-private val delegateField by lazy {
-    ComposeWindow::class.java.getDeclaredField("delegate").apply { isAccessible = true }
-}
-
-private val getLayerMethod by lazy {
-    delegateField.type.getDeclaredMethod("getLayer").apply { isAccessible = true }
-}
-
-private val getComponentMethod by lazy {
-    getLayerMethod.returnType.getDeclaredMethod("getComponent")
-}
