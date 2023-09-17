@@ -9,14 +9,17 @@ import com.sun.jna.PointerType
 import com.sun.jna.platform.win32.W32Errors
 import com.sun.jna.platform.win32.WinDef
 import com.sun.jna.platform.win32.WinDef.HWND
+import com.sun.jna.platform.win32.WinDef.LPARAM
+import com.sun.jna.platform.win32.WinDef.LRESULT
+import com.sun.jna.platform.win32.WinDef.WPARAM
 import com.sun.jna.platform.win32.WinNT.HRESULT
 import com.sun.jna.ptr.IntByReference
 import com.sun.jna.win32.StdCallLibrary
 import com.sun.jna.win32.W32APIOptions
 
 internal object Dwm {
-    fun extendFrameIntoClientArea(hwnd: HWND, margin: Int = 0) =
-        extendFrameIntoClientArea(hwnd, margin, margin, margin, margin)
+    fun extendFrameIntoClientArea(hwnd: HWND, allMargins: Int = 0) =
+        extendFrameIntoClientArea(hwnd, allMargins, allMargins, allMargins, allMargins)
 
     fun extendFrameIntoClientArea(
         hwnd: HWND,
@@ -47,6 +50,11 @@ internal object Dwm {
     fun setWindowAttribute(hwnd: HWND, attribute: DwmWindowAttribute, value: Int) =
         setWindowAttribute(hwnd, attribute, IntByReference(value), INT_SIZE)
 
+    fun callDefaultWindowHitProc(hwnd: HWND, msg: Int, wParam: WPARAM, lParam: LPARAM): Boolean {
+        val dwmDefWindowProc = DwmImpl.DwmDefWindowProc(hwnd, msg, wParam, lParam)
+        return dwmDefWindowProc != LRESULT(0)
+    }
+
     private fun setWindowAttribute(
         hwnd: HWND,
         attribute: DwmWindowAttribute,
@@ -67,4 +75,5 @@ private object DwmImpl : DwmApi by Native.load("dwmapi", DwmApi::class.java, W32
 private interface DwmApi : StdCallLibrary {
     fun DwmExtendFrameIntoClientArea(hwnd: HWND, margins: Margins): HRESULT
     fun DwmSetWindowAttribute(hwnd: HWND, attribute: Int, value: PointerType?, valueSize: Int): HRESULT
+    fun DwmDefWindowProc(hwnd: HWND, msg: Int, wParam: WPARAM, lParam: LPARAM): LRESULT
 }

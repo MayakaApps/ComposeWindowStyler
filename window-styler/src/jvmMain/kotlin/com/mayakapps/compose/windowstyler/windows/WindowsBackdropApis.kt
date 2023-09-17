@@ -8,11 +8,18 @@ import com.mayakapps.compose.windowstyler.windows.jna.enums.DwmSystemBackdrop
 import com.mayakapps.compose.windowstyler.windows.jna.enums.DwmWindowAttribute
 import com.sun.jna.platform.win32.WinDef
 
-internal class WindowsBackdropApis(private val hwnd: WinDef.HWND) {
+internal class WindowsBackdropApis private constructor(private val hwnd: WinDef.HWND) {
     private var isSystemBackdropSet = false
     private var isMicaEnabled = false
     private var isAccentPolicySet = false
     private var isSheetOfGlassApplied = false
+
+    companion object {
+        /**
+         * Instantiate [WindowsBackdropApis] for the given window and install it.
+         */
+        fun install(hwnd: WinDef.HWND) = WindowsBackdropApis(hwnd)
+    }
 
     fun setSystemBackdrop(systemBackdrop: DwmSystemBackdrop) {
         createSheetOfGlassEffect()
