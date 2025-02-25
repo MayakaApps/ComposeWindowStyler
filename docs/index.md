@@ -1,28 +1,9 @@
-<br />
-
-<div align="center">
-    <img src="docs/images/logo.png" alt="Logo"/>
-</div>
-
-<h1 align="center" style="margin-top: 0;">Compose Window Styler</h1>
-
-<div align="center">
-
-![Compose Window Styler](https://img.shields.io/badge/Compose-Window%20Styler-blue?logo=jetpackcompose)
-[![GitHub stars](https://img.shields.io/github/stars/MayakaApps/ComposeWindowStyler)](https://github.com/MayakaApps/ComposeWindowStyler/stargazers)
-[![GitHub license](https://img.shields.io/github/license/MayakaApps/ComposeWindowStyler)](https://github.com/MayakaApps/ComposeWindowStyler/blob/main/LICENSE)
-![Maven Central](https://img.shields.io/maven-central/v/com.mayakapps.compose/window-styler)
-![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/com.mayakapps.compose/window-styler?server=https%3A%2F%2Fs01.oss.sonatype.org)
-[![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2FMayakaApps%2FComposeWindowStyler)](https://twitter.com/intent/tweet?text=Compose%20Window%20Styler%20is%20a%20library%20that%20lets%20you%20style%20your%20Compose%20for%20Desktop%20window%20to%20have%20more%20native%20and%20modern%20UI.:&url=https%3A%2F%2Fgithub.com%2FMayakaApps%2FComposeWindowStyler)
-
-</div>
-
 Compose Window Styler is a library that lets you style your Compose for Desktop window to have more
 native and modern UI. This includes styling the window to use acrylic, mica, ...etc.
 
 ---
 
-![Demo Screenshot](docs/images/demo_preview.webp)
+![Demo Screenshot](images/demo_preview.webp)
 
 ---
 
@@ -37,11 +18,9 @@ repositories {
 }
 
 dependencies {
-    implementation("com.mayakapps.compose:window-styler:<version>")
+    implementation("com.mayakapps.compose:window-styler:{{ versions.library }}")
 }
 ```
-
-Don't forget to replace `<version>` with the latest/desired version found on the badges above.
 
 ## Usage
 
@@ -61,10 +40,6 @@ Window(onCloseRequest = ::exitApplication) {
     App()
 }
 ```
-
-## Documentation
-
-See documentation [here](https://mayakaapps.github.io/ComposeWindowStyler/)
 
 ## Available Styles
 
@@ -86,7 +61,7 @@ used backdrop as follows:
 * `WindowBackdrop.Solid(val color: Color)`: This applies the color as a solid background which means
   that any alpha component is ignored and the color is rendered as opaque.
 * `WindowBackdrop.Transparent`: This makes the window fully transparent.
-* `WindowBackdrop.Transparent(val color: Color)`: Same as `Solid` but allows transparency taking
+* `WindowBackdrop.Transparent(val color: Color)`: Same as `Solid` but allows transparency, taking
   into account the alpha value. If the passed color is fully opaque, the alpha is set to `0.5F`.
 * `WindowBackdrop.Aero`: This applies [Aero](https://en.wikipedia.org/wiki/Windows_Aero) backdrop
   which is Windows Vista and Windows 7 version of blur. This effect doesn't allow any customization.
@@ -130,7 +105,7 @@ OSes.
 
 ## License
 
-This library is distributed under Apache 2.0 License. See [LICENSE](LICENSE) for more information.
+This library is distributed under Apache 2.0 License.
 
 ## Contributing
 
@@ -142,6 +117,6 @@ of efforts. You can also check open issues for bugs/features that needs to be fi
 ## Acknowledgements
 
 * [flutter_acrylic](https://github.com/alexmercerind/flutter_acrylic): This library is heavily based
-  on flutter_acrylic.
+  on flutter_acrylic
 * [Swing Acrylic](https://github.com/krlvm/SwingAcrylic): as a reference for the Java implementation
-  of required APIs.
+  of required APIs
