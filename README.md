@@ -144,7 +144,7 @@ All the following properties are only supported on Windows 11 or greater and has
 
 ## License
 
-This library is distributed under the MIT license.
+This library is distributed under Apache 2.0 License. See [LICENSE](LICENSE) for more information.
 
 ## Contributing
 
