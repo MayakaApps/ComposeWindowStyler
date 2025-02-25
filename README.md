@@ -1,7 +1,7 @@
 <br />
 
 <div align="center">
-    <img src="res/logo.png" alt="Logo"/>
+    <img src="docs/images/logo.png" alt="Logo"/>
 </div>
 
 <h1 align="center" style="margin-top: 0;">Compose Window Styler</h1>
@@ -22,7 +22,7 @@ UI. This includes styling the window to use acrylic, mica ...etc.**
 
 ---
 
-![Demo Screenshot](res/demo_preview.webp)
+![Demo Screenshot](docs/images/demo_preview.webp)
 
 ---
 

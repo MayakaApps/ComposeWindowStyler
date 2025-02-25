@@ -1,21 +1,43 @@
-# IDEA/Android Studio
-.idea/*
-!.idea/codeStyles
-*.iml
+#
+# Gradle
+#
 
-# Android Studio - Layout Inspector
-/captures
+.gradle/
+**/build/
+!**/src/**/build/
 
-# Local configuration file (sdk path, etc)
+# Local configuration file
 local.properties
 
-# Gradle files
-.gradle/
-build/
+#
+# Kotlin
+#
 
-# NDK
-.externalNativeBuild/
-.cxx/
+.kotlin
+
+#
+# IntelliJ
+#
+
+**/.idea/*
+!**/.idea/codeStyles
+!**/.idea/copyright
+!**/.idea/dictionaries
+**/.idea/dictionaries/*
+!**/.idea/dictionaries/default_user.xml
+*.iml
+
+#
+# CI
+#
+
+# Mkdocs
+site/
+docs/api/
+
+#
+# Common
+#
 
 # Mac files
 .DS_Store

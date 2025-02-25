@@ -27,3 +27,18 @@ kotlin {
         }
     }
 }
+
+dokka {
+    moduleName.set("Compose Window Styler")
+
+    dokkaPublications.html {
+        outputDirectory.set(rootProject.layout.projectDirectory.dir("docs/api"))
+    }
+
+    pluginsConfiguration.html {
+        customStyleSheets.from(rootProject.layout.projectDirectory.file("docs/styles/dokka.css"))
+        customAssets.from(rootProject.layout.projectDirectory.file("docs/images/logo.png"))
+
+        footerMessage.set("Copyright &copy; 2023-2025 MayakaApps.")
+    }
+}
