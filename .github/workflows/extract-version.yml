@@ -28,4 +28,4 @@ jobs:
       - name: Extract Library version
         id: extract
         run: |
-          echo "library-version=$(sed -rn 's/^VERSION_NAME=(.*)\r?$/\1/p' 'gradle.properties')" >> $GITHUB_OUTPUT
+          echo "library-version=$(sed -rn 's/^VERSION_NAME=(.*)\r?$/\1/p' 'window-styler/gradle.properties')" >> $GITHUB_OUTPUT
