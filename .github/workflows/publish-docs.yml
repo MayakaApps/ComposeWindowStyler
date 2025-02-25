@@ -1,0 +1,63 @@
+name: Publish Documentation
+
+on:
+  workflow_call:
+    inputs:
+      library-version:
+        required: true
+        type: string
+
+jobs:
+  publish-docs:
+    name: Publish Documentation
+
+    runs-on: ubuntu-latest
+
+    env:
+      LIBRARY_VERSION: ${{ inputs.library-version }}
+
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 17
+
+      - name: Setup gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.13.2
+
+      - name: Generate the API documentation
+        run: ./gradlew :dokkaGenerate
+
+      - name: Build mkdocs
+        run: |
+          pip3 install -r .github/workflows/publish-docs-requirements.txt
+          mkdocs build
+
+      - name: Configure git for mike
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git fetch origin gh-pages --depth=1
+
+      - name: Deploy documentation with mike
+        if: ${{ success() }}
+        run: |
+          mike deploy -u --push ${{ inputs.library-version }} \
+          ${{ (endsWith(inputs.library-version, '-SNAPSHOT') && 'snapshot') || 'latest' }}

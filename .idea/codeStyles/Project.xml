@@ -6,6 +6,9 @@
     <JetCodeStyleSettings>
       <option name="CODE_STYLE_DEFAULTS" value="KOTLIN_OFFICIAL" />
     </JetCodeStyleSettings>
+    <Markdown>
+      <option name="KEEP_LINE_BREAKS_INSIDE_TEXT_BLOCKS" value="false" />
+    </Markdown>
     <Properties>
       <option name="KEEP_BLANK_LINES" value="true" />
     </Properties>
