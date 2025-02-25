@@ -39,6 +39,6 @@ dokka {
         customStyleSheets.from(rootProject.layout.projectDirectory.file("docs/styles/dokka.css"))
         customAssets.from(rootProject.layout.projectDirectory.file("docs/images/logo.png"))
 
-        footerMessage.set("Copyright &copy; 2023-2025 MayakaApps.")
+        footerMessage.set("Copyright &copy; 2022-2025 MayakaApps.")
     }
 }
