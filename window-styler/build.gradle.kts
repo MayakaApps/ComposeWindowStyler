@@ -1,5 +1,3 @@
-// Suppress annotation is a workaround for a bug.
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.composeMultiplatform)
@@ -14,12 +12,11 @@ version = extra["VERSION_NAME"] as String
 
 kotlin {
     jvmToolchain(17)
-    jvm {
-        withJava()
-    }
+
+    jvm()
 
     sourceSets {
-        named("jvmMain") {
+        jvmMain {
             dependencies {
                 implementation(compose.runtime)
                 implementation(compose.ui)
