@@ -43,7 +43,7 @@ jobs:
           python-version: 3.13.2
 
       - name: Generate the API documentation
-        run: ./gradlew :dokkaGenerate
+        run: ./gradlew :window-styler:dokkaGenerate
 
       - name: Build mkdocs
         run: |
