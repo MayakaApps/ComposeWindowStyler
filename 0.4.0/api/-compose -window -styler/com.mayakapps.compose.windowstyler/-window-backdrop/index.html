@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>WindowBackdrop</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+<link href="../../../images/logo.png">
+<link href="../../../styles/dokka.css" rel="Stylesheet">
+</head>
+<body>
+    <div class="root">
+    <nav class="navigation theme-dark" id="navigation-wrapper">
+            <a class="library-name--link" href="../../../index.html">
+                    Compose Window Styler
+            </a>
+        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle"
+                type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+0.4.0        </div>
+        <div class="navigation-controls">
+        <div class="filter-section filter-section_loading" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active=""
+                        data-filter=":window-styler/jvmMain">jvm</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox"
+                        data-role="dropdown-toggle"
+                        aria-controls="platform-tags-listbox"
+                        aria-haspopup="listbox"
+                        aria-expanded="false"
+                        aria-label="Toggle source sets"
+                ></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
+                    <div class="dropdown--header"><span>Platform filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":window-styler/jvmMain"
+                                       data-filter=":window-styler/jvmMain"/>
+                                <span class="checkbox--icon"></span>
+                                jvm
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </div>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button"
+                    type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list"
+                        data-role="dropdown-listbox">
+                        <div class="dropdown--header">
+                            <span>
+                                    Compose Window Styler
+                            </span>
+                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                            </button>
+                        </div>
+                        <div class="sidebar--inner" id="sideMenu"></div>
+                    </ul>
+                    <div class="dropdown--overlay"></div>
+                </div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="Compose Window Styler::com.mayakapps.compose.windowstyler/WindowBackdrop///PointingToDeclaration//567194623">
+  <div class="breadcrumbs"><a href="../../../index.html">Compose Window Styler</a><span class="delimiter">/</span><a href="../index.html">com.mayakapps.compose.windowstyler</a><span class="delimiter">/</span><span class="current">WindowBackdrop</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Window</span><wbr></wbr><span><span>Backdrop</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":window-styler/jvmMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="index.html">WindowBackdrop</a></div><p class="paragraph">The type of the window backdrop/background.</p><p class="paragraph"><strong>Fallback Strategy</strong></p><p class="paragraph">In case of unsupported effect the library tries to fall back to the nearest supported effect as follows:</p><p class="paragraph"><a href="-tabbed/index.html">Tabbed</a> -><a href="-mica/index.html">Mica</a> -><a href="-acrylic/index.html">Acrylic</a> -><a href="-transparent/index.html">Transparent</a></p><p class="paragraph"><a href="-aero/index.html">Aero</a> is dropped from the fallback as it is much more transparent than <a href="-tabbed/index.html">Tabbed</a> or <a href="-mica/index.html">Mica</a> and not customizable as <a href="-acrylic/index.html">Acrylic</a>. If <a href="-tabbed/index.html">Tabbed</a> or <a href="-mica/index.html">Mica</a> falls back to <a href="-acrylic/index.html">Acrylic</a> or <a href="-transparent/index.html">Transparent</a>, high alpha is used with white or black color according to <code class="lang-kotlin">isDarkTheme</code> to emulate these effects.</p><h4 class="">Inheritors</h4><div class="table"><div class="table-row" data-filterable-current=":window-styler/jvmMain" data-filterable-set=":window-styler/jvmMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-default/index.html">Default</a></div></span></div><div></div></div></div><div class="table-row" data-filterable-current=":window-styler/jvmMain" data-filterable-set=":window-styler/jvmMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-solid/index.html">Solid</a></div></span></div><div></div></div></div><div class="table-row" data-filterable-current=":window-styler/jvmMain" data-filterable-set=":window-styler/jvmMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-transparent/index.html">Transparent</a></div></span></div><div></div></div></div><div class="table-row" data-filterable-current=":window-styler/jvmMain" data-filterable-set=":window-styler/jvmMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-aero/index.html">Aero</a></div></span></div><div></div></div></div><div class="table-row" data-filterable-current=":window-styler/jvmMain" data-filterable-set=":window-styler/jvmMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-acrylic/index.html">Acrylic</a></div></span></div><div></div></div></div><div class="table-row" data-filterable-current=":window-styler/jvmMain" data-filterable-set=":window-styler/jvmMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-mica/index.html">Mica</a></div></span></div><div></div></div></div><div class="table-row" data-filterable-current=":window-styler/jvmMain" data-filterable-set=":window-styler/jvmMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-tabbed/index.html">Tabbed</a></div></span></div><div></div></div></div></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="746320276%2FClasslikes%2F567194623" anchor-label="Acrylic" id="746320276%2FClasslikes%2F567194623" data-filterable-set=":window-styler/jvmMain"></a>
+          <div class="table-row" data-filterable-current=":window-styler/jvmMain" data-filterable-set=":window-styler/jvmMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-acrylic/index.html"><span><span>Acrylic</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="746320276%2FClasslikes%2F567194623"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":window-styler/jvmMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-acrylic/index.html">Acrylic</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>color<span class="token operator">: </span><span data-unresolved-link="androidx.compose.ui.graphics/Color///PointingToDeclaration/">Color</span></span></span><span class="token punctuation">)</span> : <a href="index.html">WindowBackdrop</a>, <span data-unresolved-link="com.mayakapps.compose.windowstyler/ColorableWindowBackdrop///PointingToDeclaration/">ColorableWindowBackdrop</span></div><div class="brief "><p class="paragraph">This applies <a href="https://docs.microsoft.com/en-us/windows/apps/design/style/acrylic">Acrylic</a> backdrop blended with the supplied <a href="-acrylic/color.html">color</a>. If the backdrop is rendered opaque, double check that <a href="-acrylic/color.html">color</a> has reasonable alpha value.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1553947856%2FClasslikes%2F567194623" anchor-label="Aero" id="-1553947856%2FClasslikes%2F567194623" data-filterable-set=":window-styler/jvmMain"></a>
+          <div class="table-row" data-filterable-current=":window-styler/jvmMain" data-filterable-set=":window-styler/jvmMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-aero/index.html"><span><span>Aero</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1553947856%2FClasslikes%2F567194623"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":window-styler/jvmMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-aero/index.html">Aero</a> : <a href="index.html">WindowBackdrop</a></div><div class="brief "><p class="paragraph">This applies <a href="https://en.wikipedia.org/wiki/Windows_Aero">Aero</a> backdrop which is Windows Vista and Windows 7 version of blur.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1241760720%2FClasslikes%2F567194623" anchor-label="Default" id="1241760720%2FClasslikes%2F567194623" data-filterable-set=":window-styler/jvmMain"></a>
+          <div class="table-row" data-filterable-current=":window-styler/jvmMain" data-filterable-set=":window-styler/jvmMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-default/index.html"><span><span>Default</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1241760720%2FClasslikes%2F567194623"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":window-styler/jvmMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-default/index.html">Default</a> : <a href="index.html">WindowBackdrop</a></div><div class="brief "><p class="paragraph">This effect provides a simple solid backdrop colored as white or black according to isDarkTheme. This allows the backdrop to blend with the title bar as well. Though its name may imply that the window will be left unchanged, this is not the case as once the transparency is hacked into the window, it can't be reverted.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-524226633%2FClasslikes%2F567194623" anchor-label="Mica" id="-524226633%2FClasslikes%2F567194623" data-filterable-set=":window-styler/jvmMain"></a>
+          <div class="table-row" data-filterable-current=":window-styler/jvmMain" data-filterable-set=":window-styler/jvmMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-mica/index.html"><span><span>Mica</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-524226633%2FClasslikes%2F567194623"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":window-styler/jvmMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-mica/index.html">Mica</a> : <a href="index.html">WindowBackdrop</a></div><div class="brief "><p class="paragraph">This applies <a href="https://docs.microsoft.com/en-us/windows/apps/design/style/mica">Mica</a> backdrop themed according to <code class="lang-kotlin">isDarkTheme</code> value.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1419284134%2FClasslikes%2F567194623" anchor-label="Solid" id="1419284134%2FClasslikes%2F567194623" data-filterable-set=":window-styler/jvmMain"></a>
+          <div class="table-row" data-filterable-current=":window-styler/jvmMain" data-filterable-set=":window-styler/jvmMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-solid/index.html"><span><span>Solid</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1419284134%2FClasslikes%2F567194623"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":window-styler/jvmMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-solid/index.html">Solid</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>color<span class="token operator">: </span><span data-unresolved-link="androidx.compose.ui.graphics/Color///PointingToDeclaration/">Color</span></span></span><span class="token punctuation">)</span> : <a href="index.html">WindowBackdrop</a>, <span data-unresolved-link="com.mayakapps.compose.windowstyler/ColorableWindowBackdrop///PointingToDeclaration/">ColorableWindowBackdrop</span></div><div class="brief "><p class="paragraph">This applies <a href="-solid/color.html">color</a> as a solid background which means that any alpha component is ignored and the color is rendered as opaque.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="802814501%2FClasslikes%2F567194623" anchor-label="Tabbed" id="802814501%2FClasslikes%2F567194623" data-filterable-set=":window-styler/jvmMain"></a>
+          <div class="table-row" data-filterable-current=":window-styler/jvmMain" data-filterable-set=":window-styler/jvmMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-tabbed/index.html"><span><span>Tabbed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="802814501%2FClasslikes%2F567194623"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":window-styler/jvmMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-tabbed/index.html">Tabbed</a> : <a href="index.html">WindowBackdrop</a></div><div class="brief "><p class="paragraph">This applies Tabbed backdrop themed according to <code class="lang-kotlin">isDarkTheme</code> value. This is a backdrop that is similar to <a href="-mica/index.html">Mica</a> but targeted at tabbed windows.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1667056095%2FClasslikes%2F567194623" anchor-label="Transparent" id="1667056095%2FClasslikes%2F567194623" data-filterable-set=":window-styler/jvmMain"></a>
+          <div class="table-row" data-filterable-current=":window-styler/jvmMain" data-filterable-set=":window-styler/jvmMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-transparent/index.html"><span><span>Transparent</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1667056095%2FClasslikes%2F567194623"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":window-styler/jvmMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-transparent/index.html">Transparent</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">color<span class="token operator">: </span><span data-unresolved-link="androidx.compose.ui.graphics/Color///PointingToDeclaration/">Color</span></span></span><span class="token punctuation">)</span> : <a href="index.html">WindowBackdrop</a>, <span data-unresolved-link="com.mayakapps.compose.windowstyler/ColorableWindowBackdrop///PointingToDeclaration/">ColorableWindowBackdrop</span></div><div class="brief "><p class="paragraph">Same as <a href="-solid/index.html">Solid</a> but allows transparency taking into account the alpha value. If the passed <a href="-transparent/color.html">color</a> is fully opaque, the alpha is set to 0.5F.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+        <span>Copyright &copy; 2022-2025 MayakaApps.</span>
+        <span class="pull-right">
+            <span>Generated by </span>
+            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                <span>dokka</span>
+            </a>
+        </span>
+    </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

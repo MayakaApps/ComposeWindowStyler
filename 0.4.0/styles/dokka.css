@@ -1,0 +1,8 @@
+.library-name--link:before {
+    background: url("../images/logo.png") center no-repeat;
+    background-size: contain;
+}
+
+.navigation {
+    padding: 4px max(calc((100% - 1220px) / 2), 16px);
+}

@@ -1,0 +1,1 @@
+sourceset_dependencies='{":window-styler/commonMain":[],":window-styler/jvmMain":[":window-styler/commonMain"]}'
