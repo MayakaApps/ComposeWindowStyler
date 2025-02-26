@@ -25,26 +25,49 @@ import com.mayakapps.compose.windowstyler.windows.jna.enums.DwmWindowAttribute
 import com.sun.jna.platform.win32.WinDef
 
 internal class WindowsBackdropApis(private val hwnd: WinDef.HWND) {
-    private var isSystemBackdropSet = false
-    private var isMicaEnabled = false
-    private var isAccentPolicySet = false
-    private var isSheetOfGlassApplied = false
 
-    fun setSystemBackdrop(systemBackdrop: DwmSystemBackdrop) {
-        createSheetOfGlassEffect()
-        if (Dwm.setSystemBackdrop(hwnd, systemBackdrop)) {
-            isSystemBackdropSet = systemBackdrop == DwmSystemBackdrop.DWMSBT_DISABLE
-            if (isSystemBackdropSet) resetAccentPolicy()
-        }
-    }
+    var systemBackdrop: DwmSystemBackdrop? = null
+        set(value) {
+            requireNotNull(value)
+            if (field == value) return
 
-    fun setMicaEffectEnabled(enabled: Boolean) {
-        createSheetOfGlassEffect()
-        if (Dwm.setWindowAttribute(hwnd, DwmWindowAttribute.DWMWA_MICA_EFFECT, enabled)) {
-            isMicaEnabled = enabled
-            if (isMicaEnabled) resetAccentPolicy()
+            val result = Dwm.setSystemBackdrop(hwnd, value)
+            if (result) field = value
         }
-    }
+
+    var isMicaEffectEnabled: Boolean? = null
+        set(value) {
+            requireNotNull(value)
+            if (field == value) return
+
+            val result = Dwm.setWindowAttribute(hwnd, DwmWindowAttribute.DWMWA_MICA_EFFECT, value)
+            if (result) field = value
+        }
+
+    var isSheetOfGlassEffectEnabled: Boolean? = null
+        set(value) {
+            requireNotNull(value)
+
+            val result = if (value) {
+                // Negative margins have special meaning to DwmExtendFrameIntoClientArea.
+                // Negative margins create the "sheet of glass" effect, where the client area is
+                // rendered as a solid surface with no window border.
+                Dwm.extendFrameIntoClientArea(hwnd = hwnd, margin = -1)
+            } else {
+                // At least one margin should be non-negative in order to show the DWM window shadow
+                // created by handling [WM_NCCALCSIZE]. Matching value with bitsdojo_window:
+                // https://github.com/bitsdojo/bitsdojo_window/blob/adad0cd40be3d3e12df11d864f18a96a2d0fb4fb/bitsdojo_window_windows/windows/bitsdojo_window.cpp#L149
+                Dwm.extendFrameIntoClientArea(
+                    hwnd = hwnd,
+                    leftWidth = 0,
+                    rightWidth = 0,
+                    topHeight = 1,
+                    bottomHeight = 0,
+                )
+            }
+
+            if (result) field = value
+        }
 
     fun setAccentPolicy(
         accentState: AccentState = AccentState.ACCENT_DISABLED,
@@ -52,41 +75,6 @@ internal class WindowsBackdropApis(private val hwnd: WinDef.HWND) {
         color: Int = 0,
         animationId: Int = 0,
     ) {
-        if (User32.setAccentPolicy(hwnd, accentState, accentFlags, color, animationId)) {
-            isAccentPolicySet = accentState != AccentState.ACCENT_DISABLED
-            if (isAccentPolicySet) {
-                resetSystemBackdrop()
-                resetMicaEffectEnabled()
-                resetWindowFrame()
-            }
-        }
-    }
-
-    fun createSheetOfGlassEffect() {
-        if (!isSheetOfGlassApplied && Dwm.extendFrameIntoClientArea(hwnd, -1)) isSheetOfGlassApplied = true
-    }
-
-
-    fun resetSystemBackdrop() {
-        if (isSystemBackdropSet) setSystemBackdrop(DwmSystemBackdrop.DWMSBT_DISABLE)
-    }
-
-    fun resetMicaEffectEnabled() {
-        if (isMicaEnabled) setMicaEffectEnabled(false)
-    }
-
-    fun resetAccentPolicy() {
-        if (isAccentPolicySet) setAccentPolicy(AccentState.ACCENT_DISABLED)
-    }
-
-    fun resetWindowFrame() {
-        // At least one margin should be non-negative in order to show the DWM
-        // window shadow created by handling [WM_NCCALCSIZE].
-        //
-        // Matching value with bitsdojo_window.
-        // https://github.com/bitsdojo/bitsdojo_window/blob/adad0cd40be3d3e12df11d864f18a96a2d0fb4fb/bitsdojo_window_windows/windows/bitsdojo_window.cpp#L149
-        if (isSheetOfGlassApplied && Dwm.extendFrameIntoClientArea(hwnd, 0, 0, 1, 0)) {
-            isSheetOfGlassApplied = false
-        }
+        User32.setAccentPolicy(hwnd, accentState, accentFlags, color, animationId)
     }
 }

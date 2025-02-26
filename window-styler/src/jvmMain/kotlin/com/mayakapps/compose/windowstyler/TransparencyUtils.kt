@@ -62,9 +62,10 @@ private fun <T : JComponent> findComponent(
     }.map { klass.cast(it) }.firstOrNull()
 }
 
-private inline fun <reified T : JComponent> Container.findComponent() = findComponent(this, T::class.java)
+private inline fun <reified T : JComponent> Container.findComponent() =
+    findComponent(this, T::class.java)
 
-fun ComposeWindow.findSkiaLayer(): SkiaLayer? = findComponent<SkiaLayer>()
+private fun ComposeWindow.findSkiaLayer(): SkiaLayer? = findComponent<SkiaLayer>()
 
 internal val Window.isTransparent
     get() = when (this) {
